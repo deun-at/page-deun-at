@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf src/ public/ docs/ web-bundles/ .bmad-core/ .cursor/ node_modules/)",
+      "Bash(rm -f package.json package-lock.json vite.config.ts tsconfig.json tsconfig.app.json tsconfig.node.json eslint.config.js components.json)",
+      "Bash(mkdir -p C:/work/page-deun-at/.well-known C:/work/page-deun-at/assets)",
+      "Bash(cp \"C:/work/deun/web/privacy_policy.html\" C:/work/page-deun-at/privacy_policy.html)",
+      "Bash(cp \"C:/work/deun/web/.well-known/assetlinks.json\" C:/work/page-deun-at/.well-known/assetlinks.json)",
+      "Bash(cp \"C:/work/deun/assets/icon/icon-512.png\" C:/work/page-deun-at/assets/icon-512.png)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
