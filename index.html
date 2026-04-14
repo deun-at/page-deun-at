@@ -741,6 +741,13 @@
       .nav-links.open a { font-size: 1.25rem; }
       .menu-toggle { display: block; z-index: 300; }
 
+      nav.menu-open {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-bottom-color: transparent !important;
+      }
+
       .hero { min-height: auto; padding: 140px 24px 80px; }
       .hero-actions { flex-direction: column; align-items: center; }
       .store-badge { width: 100%; max-width: 280px; justify-content: center; }
@@ -1074,6 +1081,8 @@
     menuToggle.addEventListener('click', function() {
       navLinks.classList.toggle('open');
       var isOpen = navLinks.classList.contains('open');
+      navbar.classList.toggle('menu-open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
       menuToggle.innerHTML = isOpen
         ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
         : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
@@ -1083,6 +1092,8 @@
     navLinks.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         navLinks.classList.remove('open');
+        navbar.classList.remove('menu-open');
+        document.body.style.overflow = '';
         menuToggle.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
       });
     });
