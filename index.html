@@ -143,6 +143,37 @@
     .foot-link{transition:color .2s;}
     .foot-link:hover{color:var(--ink);}
 
+    /* ── Hero entrance + phone polish (v2) ── */
+    @media (prefers-reduced-motion: no-preference){
+      @keyframes deunHeroRise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+      @keyframes deunPhoneRise{from{opacity:0;transform:translateY(44px) rotate(2deg);}to{opacity:1;transform:none;}}
+      .reveal-armed .hero-copy>*{animation:deunHeroRise .8s cubic-bezier(.16,1,.3,1) both;}
+      .reveal-armed .hero-copy>*:nth-child(1){animation-delay:.05s;}
+      .reveal-armed .hero-copy>*:nth-child(2){animation-delay:.14s;}
+      .reveal-armed .hero-copy>*:nth-child(3){animation-delay:.23s;}
+      .reveal-armed .hero-copy>*:nth-child(4){animation-delay:.32s;}
+      .reveal-armed .hero-copy>*:nth-child(5){animation-delay:.41s;}
+      .reveal-armed .hero-phone{animation:deunPhoneRise .95s cubic-bezier(.16,1,.3,1) .18s both;}
+    }
+    .site-nav{box-shadow:0 8px 24px -20px rgba(20,18,12,0);transition:box-shadow .35s ease;}
+    .deun-root.is-scrolled .site-nav{box-shadow:0 8px 24px -14px rgba(20,18,12,.22);}
+    .phone-tilt{transition:transform .18s ease-out;will-change:transform;}
+    [data-theme="dark"] .phone-screen{--p-av:#1F211E;background:#121311 !important;color:#F2F1EC !important;}
+    [data-theme="dark"] .phone-screen .p-faint{color:#8A867C !important;}
+    [data-theme="dark"] .phone-screen .p-hero{background:#16181A !important;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 18px 30px -18px rgba(0,0,0,.65) !important;}
+    [data-theme="dark"] .phone-screen .p-card{background:#1F211E !important;box-shadow:0 2px 6px rgba(0,0,0,.32) !important;}
+    [data-theme="dark"] .phone-screen .p-accent{color:#7A74F0 !important;}
+    [data-theme="dark"] .phone-screen .p-accent-bg{background:#7A74F0 !important;}
+    [data-theme="dark"] .phone-screen .p-pos{color:#4ED99B !important;}
+    [data-theme="dark"] .phone-screen .p-neg{color:#F2937F !important;}
+    [data-theme="dark"] .phone-screen .p-star-off{color:#45473F !important;}
+    [data-theme="dark"] .phone-screen .p-tabbar{background:#1A1B19 !important;border-top-color:rgba(255,255,255,.08) !important;}
+    [data-theme="dark"] .phone-screen .p-tab-off{color:#6E6B62 !important;}
+    [data-theme="dark"] .phone-screen .p-tint-a{background:rgba(217,105,78,.18) !important;}
+    [data-theme="dark"] .phone-screen .p-tint-a .mi{color:#E8907B !important;}
+    [data-theme="dark"] .phone-screen .p-tint-b{background:rgba(122,116,240,.2) !important;}
+    [data-theme="dark"] .phone-screen .p-tint-b .mi{color:#9C97F4 !important;}
+
     /* ── Layout grids ── */
     .nav-links{display:flex;}
     .menu-btn{display:none;}
@@ -182,7 +213,7 @@
 <body>
 <div class="deun-root" style="background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;">
 
-  <nav style="position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--nav-bg);border-bottom:1px solid var(--line);">
+  <nav class="site-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--nav-bg);border-bottom:1px solid var(--line);">
     <div style="max-width:1140px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;">
       <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);">
         <img src="assets/icon-512.png" alt="deun" style="width:34px;height:34px;border-radius:10px;box-shadow:0 8px 16px -8px rgba(87,80,230,.55);display:block;">
@@ -253,8 +284,8 @@
 
       <!-- Phone mockup: Groups home -->
       <div class="hero-phone" style="display:flex;justify-content:center;">
-        <div style="width:300px;height:610px;background:#0B0C0D;border-radius:46px;padding:9px;box-shadow:0 50px 90px -36px rgba(28,24,14,.5),0 1px 0 rgba(255,255,255,.06) inset;flex:0 0 auto;">
-          <div style="width:282px;height:592px;background:#F4F3EF;border-radius:38px;overflow:hidden;position:relative;display:flex;flex-direction:column;color:#16181A;font-family:'Hanken Grotesk',sans-serif;">
+        <div class="phone-tilt" style="width:300px;height:610px;background:#0B0C0D;border-radius:46px;padding:9px;box-shadow:0 50px 90px -36px rgba(28,24,14,.5),0 1px 0 rgba(255,255,255,.06) inset;flex:0 0 auto;">
+          <div class="phone-screen" style="text-align:left;width:282px;height:592px;background:#F4F3EF;border-radius:38px;overflow:hidden;position:relative;display:flex;flex-direction:column;color:#16181A;font-family:'Hanken Grotesk',sans-serif;">
             <div style="height:38px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:relative;">
               <div style="font-size:12px;font-weight:700;">9:41</div>
               <div style="position:absolute;left:50%;top:7px;transform:translateX(-50%);width:78px;height:21px;background:#0B0C0D;border-radius:12px;"></div>
@@ -263,65 +294,65 @@
             <div style="flex:1;overflow:hidden;padding:4px 16px 14px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 2px 14px;">
                 <div>
-                  <div style="font-size:11px;color:#A39F94;font-weight:600;">Good evening</div>
+                  <div class="p-faint" style="font-size:11px;color:#A39F94;font-weight:600;">Good evening</div>
                   <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1;">Maya</div>
                 </div>
-                <div style="width:36px;height:36px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">M</div>
+                <div class="p-accent-bg" style="width:36px;height:36px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">M</div>
               </div>
-              <div style="background:#16181A;border-radius:22px;padding:16px 17px;color:#fff;margin-bottom:18px;box-shadow:0 18px 30px -18px rgba(20,18,12,.5);">
+              <div class="p-hero" style="background:#16181A;border-radius:22px;padding:16px 17px;color:#fff;margin-bottom:18px;box-shadow:0 18px 30px -18px rgba(20,18,12,.5);">
                 <div style="font-size:11px;color:#9DA0A0;font-weight:600;margin-bottom:4px;">Overall, you're owed</div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:33px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;">€182.30</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:33px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="182.30">€182.30</span></div>
                 <div style="display:flex;gap:7px;margin-top:14px;">
                   <div style="flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;">
                     <div style="font-size:10px;color:#9DA0A0;font-weight:600;">You're owed</div>
-                    <div style="font-size:14px;font-weight:700;color:#4ED99B;font-variant-numeric:tabular-nums;">€224.30</div>
+                    <div style="font-size:14px;font-weight:700;color:#4ED99B;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="224.30">€224.30</span></div>
                   </div>
                   <div style="flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;">
                     <div style="font-size:10px;color:#9DA0A0;font-weight:600;">You owe</div>
-                    <div style="font-size:14px;font-weight:700;color:#F2937F;font-variant-numeric:tabular-nums;">€42.00</div>
+                    <div style="font-size:14px;font-weight:700;color:#F2937F;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="42.00">€42.00</span></div>
                   </div>
                 </div>
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px;">
                 <div style="font-size:15px;font-weight:700;letter-spacing:-.01em;">Your groups</div>
-                <div style="display:flex;align-items:center;gap:3px;color:#5750E6;"><span class="mi" style="font-size:17px;">add</span><span style="font-size:12px;font-weight:700;">New</span></div>
+                <div class="p-accent" style="display:flex;align-items:center;gap:3px;color:#5750E6;"><span class="mi" style="font-size:17px;">add</span><span style="font-size:12px;font-weight:700;">New</span></div>
               </div>
               <div style="display:flex;flex-direction:column;gap:9px;">
-                <div style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
+                <div class="p-card" style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
                   <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
-                    <div style="width:31px;height:31px;border-radius:10px;background:#FBE7E0;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#D9694E;">flight</span></div>
+                    <div class="p-tint-a" style="width:31px;height:31px;border-radius:10px;background:#FBE7E0;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#D9694E;">flight</span></div>
                     <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15.5px;font-weight:700;letter-spacing:-.01em;flex:1;">Weekend in Lisbon</div>
                     <span class="mi" style="font-size:19px;color:#E0A52E;">star</span>
                   </div>
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <div style="display:flex;">
-                      <div style="width:22px;height:22px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;">M</div>
-                      <div style="width:22px;height:22px;border-radius:50%;background:#D9694E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;margin-left:-7px;">S</div>
-                      <div style="width:22px;height:22px;border-radius:50%;background:#1A8F5E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;margin-left:-7px;">J</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">M</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#D9694E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">S</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#1A8F5E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">J</div>
                     </div>
-                    <div style="display:flex;align-items:baseline;gap:4px;"><span style="font-size:11px;color:#9A968C;font-weight:500;">you're owed</span><span style="font-size:14px;font-weight:700;color:#1A8F5E;font-variant-numeric:tabular-nums;">€64.00</span></div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#9A968C;font-weight:500;">you're owed</span><span class="p-pos" style="font-size:14px;font-weight:700;color:#1A8F5E;font-variant-numeric:tabular-nums;">€64.00</span></div>
                   </div>
                 </div>
-                <div style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
+                <div class="p-card" style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
                   <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
-                    <div style="width:31px;height:31px;border-radius:10px;background:#E6E4FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#5750E6;">home</span></div>
+                    <div class="p-tint-b" style="width:31px;height:31px;border-radius:10px;background:#E6E4FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#5750E6;">home</span></div>
                     <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15.5px;font-weight:700;letter-spacing:-.01em;flex:1;">Flat 3B</div>
-                    <span class="mi" style="font-size:19px;color:#D5D2C8;">star</span>
+                    <span class="mi p-star-off" style="font-size:19px;color:#D5D2C8;">star</span>
                   </div>
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <div style="display:flex;">
-                      <div style="width:22px;height:22px;border-radius:50%;background:#2E8BB8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;">A</div>
-                      <div style="width:22px;height:22px;border-radius:50%;background:#E0A52E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid #fff;margin-left:-7px;">R</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#2E8BB8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">A</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#E0A52E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">R</div>
                     </div>
-                    <div style="display:flex;align-items:baseline;gap:4px;"><span style="font-size:11px;color:#9A968C;font-weight:500;">you owe</span><span style="font-size:14px;font-weight:700;color:#D85A47;font-variant-numeric:tabular-nums;">€18.50</span></div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#9A968C;font-weight:500;">you owe</span><span class="p-neg" style="font-size:14px;font-weight:700;color:#D85A47;font-variant-numeric:tabular-nums;">€18.50</span></div>
                   </div>
                 </div>
               </div>
             </div>
-            <div style="flex:0 0 auto;height:60px;background:#FBFAF7;border-top:1px solid rgba(20,18,12,.06);display:flex;align-items:center;justify-content:space-around;padding:0 18px 8px;">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5750E6;"><span class="mi" style="font-size:23px;">receipt_long</span><span style="font-size:9px;font-weight:700;">Groups</span></div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">group</span><span style="font-size:9px;font-weight:600;">Friends</span></div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">settings</span><span style="font-size:9px;font-weight:600;">Settings</span></div>
+            <div class="p-tabbar" style="flex:0 0 auto;height:60px;background:#FBFAF7;border-top:1px solid rgba(20,18,12,.06);display:flex;align-items:center;justify-content:space-around;padding:0 18px 8px;">
+              <div class="p-accent" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5750E6;"><span class="mi" style="font-size:23px;">receipt_long</span><span style="font-size:9px;font-weight:700;">Groups</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">group</span><span style="font-size:9px;font-weight:600;">Friends</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">settings</span><span style="font-size:9px;font-weight:600;">Settings</span></div>
             </div>
           </div>
         </div>
@@ -550,6 +581,39 @@
   requestAnimationFrame(function () { requestAnimationFrame(sweep); });
   window.addEventListener('scroll', sweep, { passive: true });
   setTimeout(function () { root.classList.add('reveal-snap'); els.forEach(reveal); }, 1200);
+
+  // ── Nav shadow on scroll ──
+  var deunRoot = document.querySelector('.deun-root');
+  function navSweep() { if (deunRoot) deunRoot.classList.toggle('is-scrolled', (window.scrollY || 0) > 8); }
+  navSweep();
+  window.addEventListener('scroll', navSweep, { passive: true });
+
+  // ── Hero phone: count-up amounts + desktop 3D tilt ──
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+    [].forEach.call(document.querySelectorAll('.count-amt'), function (el) {
+      var target = parseFloat(el.getAttribute('data-target') || '0');
+      var dur = 1300, t0 = performance.now() + 450;
+      var tick = function (now) {
+        var p = Math.min(1, Math.max(0, (now - t0) / dur));
+        el.textContent = '€' + (target * ease(p)).toFixed(2);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+
+    var phone = document.querySelector('.phone-tilt');
+    var heroSec = document.querySelector('#top');
+    if (phone && heroSec && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      heroSec.addEventListener('mousemove', function (ev) {
+        var r = phone.getBoundingClientRect();
+        var dx = (ev.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
+        var dy = (ev.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
+        phone.style.transform = 'perspective(1100px) rotateY(' + (dx * 4).toFixed(2) + 'deg) rotateX(' + (-dy * 3).toFixed(2) + 'deg)';
+      });
+      heroSec.addEventListener('mouseleave', function () { phone.style.transform = ''; });
+    }
+  }
 
   // ── QR codes (fixed dark modules on white, both themes) ──
   function renderQR(id, url) {
