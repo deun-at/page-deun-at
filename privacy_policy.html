@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,333 +8,417 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://deun.app/privacy_policy.html">
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-  <meta name="theme-color" content="#6366f1">
+  <meta name="theme-color" content="#F4F3EF">
+
+  <!-- Restore theme before paint to avoid a flash -->
+  <script>
+    try {
+      if (localStorage.getItem('deun-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
 
   <style>
-    /* ── Reset & Base ── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *{box-sizing:border-box;}
+    body{margin:0;}
+    html{scroll-behavior:smooth;scroll-padding-top:96px;}
+    .mi{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;display:inline-block;}
 
-    :root {
-      --accent: #6366f1;
-      --accent-2: #a855f7;
-      --accent-rgb: 99,102,241;
-      --gradient: linear-gradient(135deg, var(--accent), var(--accent-2));
-      --radius: 16px;
-      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* ── Theme tokens (light default; dark toggled on <html>) ── */
+    :root{
+      --bg:#F4F3EF; --surface:#FBFAF7; --card:#FFFFFF;
+      --ink:#16181A; --ink-soft:#3C3A35;
+      --muted:#7E7A70; --faint:#A39F94;
+      --line:rgba(20,18,12,.08); --line-strong:#E4E1D8;
+      --accent:#5750E6; --accent-tint:#ECEBFC;
+      --green:#1A8F5E; --red:#D85A47; --amber:#C98A2E;
+      --shadow:0 2px 4px rgba(20,18,12,.04);
+      --shadow-lift:0 16px 34px -18px rgba(20,18,12,.22);
+      --nav-bg:rgba(244,243,239,.82);
+    }
+    [data-theme="dark"]{
+      --bg:#121311; --surface:#1A1B19; --card:#1F211E;
+      --ink:#F2F1EC; --ink-soft:#CFCEC8;
+      --muted:#9A968C; --faint:#7C786F;
+      --line:rgba(255,255,255,.09); --line-strong:#33352F;
+      --accent:#7A74F0; --accent-tint:rgba(122,116,240,.16);
+      --green:#4ED99B; --red:#F2937F; --amber:#F2C97F;
+      --shadow:0 2px 6px rgba(0,0,0,.32);
+      --shadow-lift:0 18px 38px -18px rgba(0,0,0,.6);
+      --nav-bg:rgba(18,19,17,.82);
     }
 
-    [data-theme="dark"] {
-      --bg-body: #08090a;
-      --bg-card: rgba(255,255,255,0.04);
-      --bg-nav: rgba(8,9,10,0.85);
-      --text-primary: #ffffff;
-      --text-secondary: rgba(255,255,255,0.65);
-      --border: rgba(255,255,255,0.08);
-      --border-hover: rgba(255,255,255,0.15);
+    /* ── View-transition circular theme reveal ── */
+    ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal;}
+    ::view-transition-old(root){z-index:0;}
+    ::view-transition-new(root){z-index:1;}
+
+    .th-sun{display:none;}.th-moon{display:inline-flex;}
+    [data-theme="dark"] .th-sun{display:inline-flex;}[data-theme="dark"] .th-moon{display:none;}
+
+    .nav-hover{transition:color .2s;}
+    .nav-hover:hover{color:var(--ink);}
+    .foot-link{transition:color .2s;}
+    .foot-link:hover{color:var(--ink);}
+
+    .pp-body{font-family:'Hanken Grotesk',sans-serif;color:var(--ink-soft);font-size:15px;line-height:1.7;font-weight:450;}
+    .pp-body p{margin:0 0 16px;}
+    .pp-body a{color:var(--accent);text-decoration:none;font-weight:600;}
+    .pp-body a:hover{text-decoration:underline;}
+    .pp-body ul{margin:0 0 16px;padding-left:22px;}
+    .pp-body li{margin:0 0 9px;}
+    .pp-body strong{color:var(--ink);font-weight:700;}
+    .pp-h2{font-family:'Bricolage Grotesque',sans-serif;color:var(--ink);font-size:22px;font-weight:700;letter-spacing:-.02em;margin:0 0 6px;scroll-margin-top:96px;}
+    .pp-eyebrow{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+    .pp-toc a{display:flex;gap:12px;align-items:baseline;text-decoration:none;color:var(--ink-soft);font-size:14px;font-weight:600;padding:8px 10px;border-radius:10px;line-height:1.4;}
+    .pp-toc a:hover{background:var(--accent-tint);color:var(--accent);}
+    .pp-toc .n{font-family:'Bricolage Grotesque',sans-serif;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;min-width:20px;}
+    .pp-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 16px;}
+    .pp-table th{text-align:left;font-weight:700;color:var(--ink);padding:11px 12px;border-bottom:1.5px solid var(--line-strong);font-size:12px;letter-spacing:.02em;}
+    .pp-table td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted);line-height:1.5;}
+    .pp-table td:first-child{color:var(--ink);font-weight:600;width:30%;}
+    .pp-yes{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--green);}
+    .pp-no{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--faint);}
+    .pp-section{padding:30px 0;border-top:1px solid var(--line);}
+    .pp-shell{max-width:820px;margin:0 auto;padding:0 24px;}
+    .pp-grid{display:grid;grid-template-columns:1fr;}
+    @media(min-width:1080px){
+      .pp-two{display:grid;grid-template-columns:230px 1fr;gap:48px;align-items:start;max-width:1140px;}
+      .pp-toc-wrap{position:sticky;top:96px;}
     }
-
-    [data-theme="light"] {
-      --bg-body: #ffffff;
-      --bg-card: rgba(0,0,0,0.03);
-      --bg-nav: rgba(255,255,255,0.85);
-      --text-primary: #1a1a1a;
-      --text-secondary: rgba(0,0,0,0.55);
-      --border: rgba(0,0,0,0.08);
-      --border-hover: rgba(0,0,0,0.15);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font);
-      background: var(--bg-body);
-      color: var(--text-primary);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    img { max-width: 100%; display: block; }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ── Navigation ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 16px 0;
-      background: var(--bg-nav);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s, border-color 0.3s;
-    }
-
-    nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      text-decoration: none;
-    }
-    .nav-logo:hover { text-decoration: none; }
-    .nav-logo img { width: 36px; height: 36px; border-radius: 10px; }
-
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-
-    .nav-back {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      transition: color 0.2s;
-      text-decoration: none;
-    }
-    .nav-back:hover { color: var(--text-primary); text-decoration: none; }
-
-    .theme-toggle {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      width: 38px; height: 38px;
-    }
-    .theme-toggle:hover {
-      color: var(--text-primary);
-      border-color: var(--border-hover);
-      background: var(--bg-card);
-    }
-    .theme-toggle svg { display: block; }
-    .theme-toggle .icon-moon { display: none; }
-    [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
-    [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
-    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
-    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
-
-    /* ── Content area ── */
-    .content {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 120px 24px 80px;
-    }
-
-    /* ── Privacy policy content styling ── */
-    [data-custom-class="body"],
-    [data-custom-class="body"] * {
-      font-family: var(--font) !important;
-      background: transparent !important;
-    }
-
-    [data-custom-class="body"] {
-      color: var(--text-secondary) !important;
-    }
-
-    [data-custom-class="title"],
-    [data-custom-class="title"] * {
-      color: var(--text-primary) !important;
-      font-size: inherit !important;
-    }
-
-    [data-custom-class="title"] h1 {
-      font-size: clamp(2rem, 4vw, 2.8rem) !important;
-      font-weight: 700 !important;
-      letter-spacing: -0.02em !important;
-      background: var(--gradient) !important;
-      -webkit-background-clip: text !important;
-      -webkit-text-fill-color: transparent !important;
-      background-clip: text !important;
-      margin-bottom: 0 !important;
-    }
-
-    [data-custom-class="subtitle"],
-    [data-custom-class="subtitle"] * {
-      color: var(--text-secondary) !important;
-      font-size: 0.95rem !important;
-    }
-
-    [data-custom-class="heading_1"],
-    [data-custom-class="heading_1"] * {
-      color: var(--text-primary) !important;
-      font-size: 1.4rem !important;
-      font-weight: 600 !important;
-    }
-
-    [data-custom-class="heading_1"] {
-      margin-top: 2.5rem !important;
-      margin-bottom: 1rem !important;
-      display: block;
-    }
-
-    [data-custom-class="heading_2"],
-    [data-custom-class="heading_2"] * {
-      color: var(--text-primary) !important;
-      font-size: 1.15rem !important;
-      font-weight: 600 !important;
-    }
-
-    [data-custom-class="heading_2"] {
-      margin-top: 1.5rem !important;
-      margin-bottom: 0.5rem !important;
-      display: block;
-    }
-
-    [data-custom-class="body_text"],
-    [data-custom-class="body_text"] * {
-      color: var(--text-secondary) !important;
-      font-size: 0.95rem !important;
-      line-height: 1.75 !important;
-    }
-
-    [data-custom-class="link"] {
-      color: var(--accent) !important;
-      word-break: break-word;
-    }
-
-    [data-custom-class="body"] ul,
-    [data-custom-class="body"] ol {
-      margin-left: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    [data-custom-class="body"] li {
-      margin-bottom: 0.35rem;
-    }
-
-    [data-custom-class="body"] strong {
-      color: var(--text-primary) !important;
-    }
-
-    [data-custom-class="body"] table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.875rem;
-    }
-
-    [data-custom-class="body"] td,
-    [data-custom-class="body"] th {
-      border: 1px solid var(--border);
-      padding: 10px 14px;
-      text-align: left;
-      color: var(--text-secondary) !important;
-    }
-
-    [data-custom-class="body"] th {
-      color: var(--text-primary) !important;
-      font-weight: 600;
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 48px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    footer .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-    }
-    .footer-left img { width: 28px; height: 28px; border-radius: 8px; }
-
-    .footer-links { display: flex; gap: 24px; list-style: none; }
-    .footer-links a {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--text-primary); text-decoration: none; }
-    .footer-copy { font-size: 0.8rem; color: var(--text-secondary); }
-
-    @media (max-width: 768px) {
-      .content { padding: 100px 20px 60px; }
-      footer .container { flex-direction: column; text-align: center; }
-    }
+    @media(max-width:1079px){ .pp-toc-wrap-desktop{display:none;} }
+    @media(min-width:1080px){ .pp-toc-inline{display:none;} }
   </style>
 </head>
-<body>
 
-  <nav>
-    <div class="container">
-      <a href="/" class="nav-logo">
-        <img src="assets/icon-512.png" alt="deun" width="36" height="36">
-        deun
+<body>
+<div class="deun-root" style="background:var(--bg);min-height:100vh;font-family:'Hanken Grotesk',sans-serif;color:var(--ink);transition:background .3s ease;">
+
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:90;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);">
+    <div style="max-width:1140px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);">
+        <img src="assets/icon-512.png" alt="deun" style="width:34px;height:34px;border-radius:10px;box-shadow:0 8px 16px -8px rgba(87,80,230,.55);display:block;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.02em;">deun</span>
       </a>
-      <div class="nav-right">
-        <a href="/" class="nav-back">&larr; Back to Home</a>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        </button>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="index.html" class="nav-hover" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">
+          <span class="mi" style="font-size:18px;">arrow_back</span> Back to home
+        </a>
+        <div data-theme-toggle class="nav-hover" title="Toggle theme" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);">
+          <span class="mi th-moon" style="font-size:19px;">dark_mode</span>
+          <span class="mi th-sun" style="font-size:19px;">light_mode</span>
+        </div>
       </div>
     </div>
   </nav>
 
-  <main class="content">
-    <div data-custom-class="body">
-      <div><strong><span><span data-custom-class="title"><span class="block-component"></span><span class="question"><h1>PRIVACY POLICY</h1></span><span class="statement-end-if-in-editor"></span></span></span></strong></div><div><span><strong><span><span data-custom-class="subtitle">Last updated <span class="question">March 23, 2025</span></span></span></strong></span></div><div><br></div><div><br></div><div><br></div><div><span><span><span data-custom-class="body_text">This Privacy Notice for <span class="question">Jakob Auer<span class="block-component"></span></span> (<span class="block-component"></span>"<strong>we</strong>," "<strong>us</strong>," or "<strong>our</strong>"<span class="statement-end-if-in-editor"></span></span><span data-custom-class="body_text">), describes how and why we might access, collect, store, use, and/or share (<span class="block-component"></span>"<strong>process</strong>"<span class="statement-end-if-in-editor"></span>) your personal information when you use our services (<span class="block-component"></span>"<strong>Services</strong>"<span class="statement-end-if-in-editor"></span>), including when you:</span></span></span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text">Visit our website<span class="block-component"></span> at <span><span class="question"><a href="https://deun.app" target="_blank" data-custom-class="link">https://deun.app</a></span></span><span><span><span data-custom-class="body_text"><span><span><span class="statement-end-if-in-editor">, or any website of ours that links to this Privacy Notice</span></span></span></span></span></span></span></span></span></li></ul><div><span class="block-component"><span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text">Download and use<span class="block-component"></span> our mobile application<span class="block-component"></span> (<span class="question">Deun)<span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span><span class="statement-end-if-in-editor">,</span></span></span></span></span></span></span></span></span></span></span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span><span class="statement-end-if-in-editor"><span class="block-component"> or any other application of ours that links to this Privacy Notice</span></span></span></span></span></span></span></span></span></span></li></ul><div><span class="block-component"></span></li></ul><div><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text">Engage with us in other related ways, including any sales, marketing, or events<span><span><span data-custom-class="body_text"><span><span><span class="statement-end-if-in-editor"></span></span></span></span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><strong>Questions or concerns? </strong>Reading this Privacy Notice will help you understand your privacy rights and choices. We are responsible for making decisions about how your personal information is processed. If you do not agree with our policies and practices, please do not use our Services.<span class="block-component"></span> If you still have any questions or concerns, please contact us at <span class="question">app.deun@gmail.com</span>.</span></span></span></div><div><br></div><div><br></div><div><strong><span><span data-custom-class="heading_1"><h2>SUMMARY OF KEY POINTS</h2></span></span></strong></div><div><span><span data-custom-class="body_text"><strong><em>This summary provides key points from our Privacy Notice, but you can find out more details about any of these topics by clicking the link following each key point or by using our </em></strong></span></span><a data-custom-class="link" href="#toc"><span><span data-custom-class="body_text"><strong><em>table of contents</em></strong></span></span></a><span><span data-custom-class="body_text"><strong><em> below to find the section you are looking for.</em></strong></span></span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>What personal information do we process?</strong> When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use. Learn more about </span></span><a data-custom-class="link" href="#personalinfo"><span><span data-custom-class="body_text">personal information you disclose to us</span></span></a><span data-custom-class="body_text">.</span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>Do we process any sensitive personal information? </strong>Some of the information may be considered <span class="block-component"></span>"special" or "sensitive"<span class="statement-end-if-in-editor"></span> in certain jurisdictions, for example your racial or ethnic origins, sexual orientation, and religious beliefs. <span class="block-component"></span>We do not process sensitive personal information.<span class="else-block"></span></span></span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>Do we collect any information from third parties?</strong> <span class="block-component"></span>We do not collect any information from third parties.<span class="else-block"></span></span></span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>How do we process your information?</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law. We may also process your information for other purposes with your consent. We process your information only when we have a valid legal reason to do so. Learn more about </span></span><a data-custom-class="link" href="#infouse"><span><span data-custom-class="body_text">how we process your information</span></span></a><span data-custom-class="body_text">.</span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>In what situations and with which <span class="block-component"></span>parties do we share personal information?</strong> We may share information in specific situations and with specific <span class="block-component"></span>third parties. Learn more about </span></span><a data-custom-class="link" href="#whoshare"><span><span data-custom-class="body_text">when and with whom we share your personal information</span></span></a><span><span data-custom-class="body_text">.<span class="block-component"></span></span></span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>How do we keep your information safe?</strong> We have adequate <span class="block-component"></span>organizational<span class="statement-end-if-in-editor"></span> and technical processes and procedures in place to protect your personal information. However, no electronic transmission over the internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, cybercriminals, or other <span class="block-component"></span>unauthorized<span class="statement-end-if-in-editor"></span> third parties will not be able to defeat our security and improperly collect, access, steal, or modify your information. Learn more about </span></span><a data-custom-class="link" href="#infosafe"><span><span data-custom-class="body_text">how we keep your information safe</span></span></a><span data-custom-class="body_text">.</span><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>What are your rights?</strong> Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information. Learn more about </span></span><a data-custom-class="link" href="#privacyrights"><span><span data-custom-class="body_text">your privacy rights</span></span></a><span data-custom-class="body_text">.</span></div><div><br></div><div><span><span data-custom-class="body_text"><strong>How do you exercise your rights?</strong> The easiest way to exercise your rights is by <span class="block-component">submitting a </span></span></span><a data-custom-class="link" href="https://app.termly.io/notify/4e0ea968-9c0c-43a0-b776-ad10be0e1261" rel="noopener noreferrer" target="_blank"><span><span data-custom-class="body_text">data subject access request</span></span></a><span><span data-custom-class="body_text"><span class="block-component"></span>, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.</span></span></div><div><br></div><div><span><span data-custom-class="body_text">Want to learn more about what we do with any information we collect? </span></span><a data-custom-class="link" href="#toc"><span><span data-custom-class="body_text">Review the Privacy Notice in full</span></span></a><span><span data-custom-class="body_text">.</span></span></div><div><br></div><div><br></div><div id="toc"><span><span><span><strong><span data-custom-class="heading_1"><h2>TABLE OF CONTENTS</h2></span></strong></span></span></span></div><div><span><a data-custom-class="link" href="#infocollect"><span>1. WHAT INFORMATION DO WE COLLECT?</span></a></span></div><div><span><a data-custom-class="link" href="#infouse"><span>2. HOW DO WE PROCESS YOUR INFORMATION?<span class="block-component"></span></span></a></span></div><div><span><a data-custom-class="link" href="#legalbases"><span>3. <span><span>WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR PERSONAL INFORMATION?</span></span><span class="statement-end-if-in-editor"></span></span></a></span></div><div><span><span><a data-custom-class="link" href="#whoshare">4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</a></span><span data-custom-class="body_text"><span class="block-component"></span></span></span></div><div><span><a data-custom-class="link" href="#3pwebsites">5. WHAT IS OUR STANCE ON THIRD-PARTY WEBSITES?<span class="statement-end-if-in-editor"></span></a><span><span><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></span></span><span class="block-component"></span></span></div><div><span><span><span><span data-custom-class="body_text"><span><span><span><span class="block-component"></span></span></span></span></span></span></span></span></div><div><span><a data-custom-class="link" href="#sociallogins"><span><span><span>6. HOW DO WE HANDLE YOUR SOCIAL LOGINS?</span></span></span></a><span><span><span data-custom-class="body_text"><span><span><span><span class="statement-end-if-in-editor"></span></span></span><span class="block-component"></span></span></span></span></span></span></div><div><span><a data-custom-class="link" href="#inforetain"><span>7. HOW LONG DO WE KEEP YOUR INFORMATION?</span></a><span><span><span data-custom-class="body_text"><span><span><span class="block-component"></span></span></span></span></span></span></span></div><div><span><a data-custom-class="link" href="#infosafe"><span>8. HOW DO WE KEEP YOUR INFORMATION SAFE?</span></a><span><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></span></span></span></span></div><div><span><span><a data-custom-class="link" href="#privacyrights">9. WHAT ARE YOUR PRIVACY RIGHTS?</a></span></span></div><div><span><a data-custom-class="link" href="#DNT"><span>10. CONTROLS FOR DO-NOT-TRACK FEATURES<span class="block-component"></span></span></a></span></div><div><span><a data-custom-class="link" href="#uslaws"><span>11. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</span></a></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><div><span class="block-component"><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span><span class="block-component"></span></span></div><div><span><a data-custom-class="link" href="#policyupdates"><span>12. DO WE MAKE UPDATES TO THIS NOTICE?</span></a></span></div><div><a data-custom-class="link" href="#contact"><span>13. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</span></a></div><div><a data-custom-class="link" href="#request"><span>14. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</span></a></div><div><br></div><div><br></div><div id="infocollect"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>1. WHAT INFORMATION DO WE COLLECT?</h2></span></strong></span></span></span></span></span><span data-custom-class="heading_2" id="personalinfo"><span><strong><h3>Personal information you disclose to us</h3></strong></span></span><span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><strong><em>In Short:</em></strong></span></span></span></span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><strong><em> </em></strong><em>We collect personal information that you provide to us.</em></span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We collect personal information that you voluntarily provide to us when you <span><span class="block-component"></span></span>register on the Services, </span><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"></span></span></span><span data-custom-class="body_text">express an interest in obtaining information about us or our products and Services, when you participate in activities on the Services, or otherwise when you contact us.</span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></span></span></div><div><span><span><span data-custom-class="body_text"><strong>Personal Information Provided by You.</strong> The personal information that we collect depends on the context of your interactions with us and the Services, the choices you make, and the products and features you use. The personal information we collect may include the following:<span><span data-custom-class="body_text"><span class="forloop-component"></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="question">names</span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="forloop-component"></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="question">email addresses</span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="forloop-component"></span></span></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="question">usernames</span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="forloop-component"></span></span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></span></span></span></div><div id="sensitiveinfo"><span><span data-custom-class="body_text"><strong>Sensitive Information.</strong> <span class="block-component"></span>We do not process sensitive information.</span></span></div><div><br></div><div><span><span data-custom-class="body_text"><span class="else-block"></span></span></span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span></span></span></span></span></span></div><div><span><span><span data-custom-class="body_text"><strong>Social Media Login Data. </strong>We may provide you with the option to register with us using your existing social media account details, like your Facebook, X, or other social media account. If you choose to register in this way, we will collect certain profile information about you from the social media provider, as described in the section called <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span><span><span data-custom-class="body_text"><span><span><a data-custom-class="link" href="#sociallogins">HOW DO WE HANDLE YOUR SOCIAL LOGINS?</a></span></span></span></span><span class="block-component"></span>"<span class="statement-end-if-in-editor"></span> below.</span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"><span class="statement-end-if-in-editor"></span></span></span></span></span></span><span class="block-component"><span class="block-component"></span></span></div><div><span data-custom-class="body_text"><span><strong>Application Data.</strong> If you use our application(s), we also may collect the following information if you choose to provide us with access or permission:<span class="block-component"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text"><em>Push Notifications.</em> We may request to send you push notifications regarding your account or certain features of the application(s). If you wish to opt out from receiving these types of communications, you may turn them off in your device's settings.<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span><span data-custom-class="body_text">This information is primarily needed to maintain the security and operation of our application(s), for troubleshooting, and for our internal analytics and reporting purposes.</span></span></div><div><br></div><div><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></div><div><span><span><span data-custom-class="body_text">All personal information that you provide to us must be true, complete, and accurate, and you must notify us of any changes to such personal information.</span></span></span></div><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span><span class="block-component"></span></div><div><span><strong><span data-custom-class="heading_2"><h3>Google API</h3></span></strong><span data-custom-class="body_text">Our use of information received from Google APIs will adhere to </span></span><a data-custom-class="link" href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener noreferrer" target="_blank"><span><span data-custom-class="body_text">Google API Services User Data Policy</span></span></a><span><span data-custom-class="body_text">, including the </span></span><a data-custom-class="link" href="https://developers.google.com/terms/api-services-user-data-policy#limited-use" rel="noopener noreferrer" target="_blank"><span><span data-custom-class="body_text">Limited Use requirements</span></span></a><span><span data-custom-class="body_text">.</span><br></span></div><div><span><br></span></div><div><span class="statement-end-if-in-editor"></span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></div><div><br></div><div id="infouse"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>2. HOW DO WE PROCESS YOUR INFORMATION?</h2></span></strong></span></span></span></span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><strong><em>In Short: </em></strong><em>We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law. We may also process your information for other purposes with your consent.</em></span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text"><strong>We process your personal information for a variety of reasons, depending on how you interact with our Services, including:</strong><span class="block-component"></span></span></span></span></div><ul><li data-custom-class="body_text"><span><span><span data-custom-class="body_text"><strong>To facilitate account creation and authentication and otherwise manage user accounts. </strong>We may process your information so you can create and log in to your account, as well as keep your account in working order.<span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></li></ul><div><span class="block-component"></span></span></span></span></span></span></li></ul><div><span class="block-component"></span></span></span></span></span></span></span></span></span></li></ul><div><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><p><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></li></ul><p><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></li></ul><p><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><p><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"></span></span></span></li></ul><div><span class="block-component"></span></span></span></li></ul><div><span><span class="block-component"><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span><strong>To save or protect an individual's vital interest.</strong> We may process your information when necessary to save or protect an individual’s vital interest, such as to prevent harm.</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><div><br></div><div id="legalbases"><strong><span><span data-custom-class="heading_1"><h2>3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</h2></span></span></strong><em><span><span data-custom-class="body_text"><strong>In Short: </strong>We only process your personal information when we believe it is necessary and we have a valid legal reason (i.e.<span class="block-component"></span>,<span class="statement-end-if-in-editor"></span> legal basis) to do so under applicable law, like with your consent, to comply with laws, to provide you with services to enter into or <span class="block-component"></span>fulfill<span class="statement-end-if-in-editor"></span> our contractual obligations, to protect your rights, or to <span class="block-component"></span>fulfill<span class="statement-end-if-in-editor"></span> our legitimate business interests.</span></span></em></div><div><span><span data-custom-class="body_text"><span class="block-component"></span></span><span data-custom-class="body_text"><span class="block-component"></span></span></span></div><div><br></div><div><em><span><span data-custom-class="body_text"><strong><u>If you are located in the EU or UK, this section applies to you.</u></strong></span></span></em></div><div><br></div><div><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></div><div><span><span data-custom-class="body_text">The General Data Protection Regulation (GDPR) and UK GDPR require us to explain the valid legal bases we rely on in order to process your personal information. As such, we may rely on the following legal bases to process your personal information:</span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text"><strong>Consent. </strong>We may process your information if you have given us permission (i.e.<span class="block-component"></span>,<span class="statement-end-if-in-editor"></span> consent) to use your personal information for a specific purpose. You can withdraw your consent at any time. Learn more about </span></span><a data-custom-class="link" href="#withdrawconsent"><span><span data-custom-class="body_text">withdrawing your consent</span></span></a><span data-custom-class="body_text">.</span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span><strong>Legal Obligations.</strong> We may process your information where we believe it is necessary for compliance with our legal obligations, such as to cooperate with a law enforcement body or regulatory agency, exercise or defend our legal rights, or disclose your information as evidence in litigation in which we are involved.<span class="statement-end-if-in-editor"></span><br></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span><strong>Vital Interests.</strong> We may process your information where we believe it is necessary to protect your vital interests or the vital interests of a third party, such as situations involving potential threats to the safety of any person.</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span data-custom-class="body_text"><span><span class="block-component"><span class="block-component"></span></span></span></span></div><div><br></div><div><span data-custom-class="body_text"><span><strong><u><em>If you are located in Canada, this section applies to you.</em></u></strong></span></span></div><div><br></div><div><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"></span></span></span></div><div><span data-custom-class="body_text"><span>We may process your information if you have given us specific permission (i.e.<span class="block-component"></span>,<span class="statement-end-if-in-editor"></span> express consent) to use your personal information for a specific purpose, or in situations where your permission can be inferred (i.e.<span class="block-component"></span>,<span class="statement-end-if-in-editor"></span> implied consent). You can </span></span><a data-custom-class="link" href="#withdrawconsent"><span data-custom-class="body_text"><span>withdraw your consent</span></span></a><span data-custom-class="body_text"><span> at any time.</span></span></div><div><br></div><div><span data-custom-class="body_text"><span>In some exceptional cases, we may be legally permitted under applicable law to process your information without your consent, including, for example:</span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>If collection is clearly in the interests of an individual and consent cannot be obtained in a timely way</span></span></li></ul><div><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>For investigations and fraud detection and prevention<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>For business transactions provided certain conditions are met</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>If it is contained in a witness statement and the collection is necessary to assess, process, or settle an insurance claim</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>For identifying injured, ill, or deceased persons and communicating with next of kin</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>If we have reasonable grounds to believe an individual has been, is, or may be victim of financial abuse<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>If it is reasonable to expect collection and use with consent would compromise the availability or the accuracy of the information and the collection is reasonable for purposes related to investigating a breach of an agreement or a contravention of the laws of Canada or a province<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span>If disclosure is required to comply with a subpoena, warrant, court order, or rules of the court relating to the production of records<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text">If it was produced by an individual in the course of their employment, business, or profession and the collection is consistent with the purposes for which the information was produced<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text">If the collection is solely for journalistic, artistic, or literary purposes<span class="statement-end-if-in-editor"></span></span></span></li></ul><div><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text">If the information is publicly available and is specified by the regulations</span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></div><div><br></div><div id="whoshare"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short:</em></strong><em> We may share information in specific situations described in this section and/or with the following <span class="block-component"></span>third parties.</em></span></span></span></div><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></div><div><br></div><div><span><span data-custom-class="body_text">We <span class="block-component"></span>may need to share your personal information in the following situations:</span></span></div><ul><li data-custom-class="body_text"><span><span data-custom-class="body_text"><strong>Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</span></span></li></ul><div><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></li></ul><div><span><span class="block-component"><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span data-custom-class="body_text"><span><span class="block-component"></span></span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></li></ul><div><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><div><br></div><div><strong><span id="3pwebsites"><span data-custom-class="heading_1"><h2>5. WHAT IS OUR STANCE ON THIRD-PARTY WEBSITES?</h2></span></span></strong><span><span data-custom-class="body_text"><strong><em>In Short:</em></strong><em> We are not responsible for the safety of any information that you share with third parties that we may link to or who advertise on our Services, but are not affiliated with, our Services.</em></span></span></div><div><br></div><div><span><span data-custom-class="body_text">The Services<span class="block-component"></span><span class="block-component"></span><span class="statement-end-if-in-editor"></span> may link to third-party websites, online services, or mobile applications and/or contain advertisements from third parties that are not affiliated with us and which may link to other websites, services, or applications. Accordingly, we do not make any guarantee regarding any such third parties, and we will not be liable for any loss or damage caused by the use of such third-party websites, services, or applications. The inclusion of a link towards a third-party website, service, or application does not imply an endorsement by us. We cannot guarantee the safety and privacy of data you provide to any third-party websites. Any data collected by third parties is not covered by this Privacy Notice. We are not responsible for the content or privacy and security practices and policies of any third parties, including other websites, services, or applications that may be linked to or from the Services. You should review the policies of such third parties and contact them directly to respond to your questions.</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span><span><span><span><span><span><span class="block-component"><span data-custom-class="heading_1"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span><span><span class="block-component"></span></span><span><span><span data-custom-class="body_text"><span><span><span><span><span><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></div><div><br></div><div id="sociallogins"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>6. HOW DO WE HANDLE YOUR SOCIAL LOGINS?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short: </em></strong><em>If you choose to register or log in to our Services using a social media account, we may have access to certain information about you.</em></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">Our Services offer you the ability to register and log in using your third-party social media account details (like your Facebook or X logins). Where you choose to do this, we will receive certain profile information about you from your social media provider. The profile information we receive may vary depending on the social media provider concerned, but will often include your name, email address, friends list, and profile picture, as well as other information you choose to make public on such a social media platform.<span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We will use the information we receive only for the purposes that are described in this Privacy Notice or that are otherwise made clear to you on the relevant Services. Please note that we do not control, and are not responsible for, other uses of your personal information by your third-party social media provider. We recommend that you review their privacy notice to understand how they collect, use, and share your personal information, and how you can set your privacy preferences on their sites and apps.<span><span><span><span><span><span><span><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span><span class="block-component"><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></div><div><br></div><div id="inforetain"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>7. HOW LONG DO WE KEEP YOUR INFORMATION?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short: </em></strong><em>We keep your information for as long as necessary to <span class="block-component"></span>fulfill<span class="statement-end-if-in-editor"></span> the purposes outlined in this Privacy Notice unless otherwise required by law.</em></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We will only keep your personal information for as long as it is necessary for the purposes set out in this Privacy Notice, unless a longer retention period is required or permitted by law (such as tax, accounting, or other legal requirements).<span class="block-component"></span> No purpose in this notice will require us keeping your personal information for longer than <span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span><span class="block-component"></span>the period of time in which users have an account with us<span class="block-component"></span><span><span><span data-custom-class="body_text"><span class="else-block"></span></span></span></span>.</span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">When we have no ongoing legitimate business need to process your personal information, we will either delete or <span class="block-component"></span>anonymize<span class="statement-end-if-in-editor"></span> such information, or, if this is not possible (for example, because your personal information has been stored in backup archives), then we will securely store your personal information and isolate it from any further processing until deletion is possible.<span><span class="block-component"></span></span></span></span></span></div><div><br></div><div id="infosafe"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>8. HOW DO WE KEEP YOUR INFORMATION SAFE?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short: </em></strong><em>We aim to protect your personal information through a system of <span class="block-component"></span>organizational<span class="statement-end-if-in-editor"></span> and technical security measures.</em></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We have implemented appropriate and reasonable technical and <span class="block-component"></span>organizational<span class="statement-end-if-in-editor"></span> security measures designed to protect the security of any personal information we process. However, despite our safeguards and efforts to secure your information, no electronic transmission over the Internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, cybercriminals, or other <span class="block-component"></span>unauthorized<span class="statement-end-if-in-editor"></span> third parties will not be able to defeat our security and improperly collect, access, steal, or modify your information. Although we will do our best to protect your personal information, transmission of personal information to and from our Services is at your own risk. You should only access the Services within a secure environment.<span><span class="statement-end-if-in-editor"></span></span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></div><div><br></div><div id="privacyrights"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>9. WHAT ARE YOUR PRIVACY RIGHTS?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short:</em></strong><em> <span><span><span data-custom-class="body_text"><em><span class="block-component"></span></em></span></span></span><span class="block-component"></span>Depending on your state of residence in the US or in <span class="else-block"></span>some regions, such as <span class="block-component"></span>the European Economic Area (EEA), United Kingdom (UK), Switzerland, and Canada<span class="block-component"></span>, you have rights that allow you greater access to and control over your personal information.<span><span><span data-custom-class="body_text"><em><span class="statement-end-if-in-editor"></span></em></span></span> </span>You may review, change, or terminate your account at any time, depending on your country, province, or state of residence.</em><span><span><span class="block-component"></span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">In some regions (like <span class="block-component"></span>the EEA, UK, Switzerland, and Canada<span class="block-component"></span>), you have certain rights under applicable data protection laws. These may include the right (i) to request access and obtain a copy of your personal information, (ii) to request rectification or erasure; (iii) to restrict the processing of your personal information; (iv) if applicable, to data portability; and (v) not to be subject to automated decision-making. In certain circumstances, you may also have the right to object to the processing of your personal information. You can make such a request by contacting us by using the contact details provided in the section <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span></span><a data-custom-class="link" href="#contact"><span><span><span data-custom-class="body_text">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</span></span></span></a><span><span><span data-custom-class="body_text"><span class="block-component"></span>"<span class="statement-end-if-in-editor"></span> below.</span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We will consider and act upon any request in accordance with applicable data protection laws.<span class="block-component"></span></span></span></span></div><div></div><div><span><span><span data-custom-class="body_text">If you are located in the EEA or UK and you believe we are unlawfully processing your personal information, you also have the right to complain to your <span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><a data-custom-class="link" href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm" rel="noopener noreferrer" target="_blank"><span>Member State data protection authority</span></a></span></span></span></span></span> or </span></span></span><a data-custom-class="link" href="https://ico.org.uk/make-a-complaint/data-protection-complaints/data-protection-complaints/" rel="noopener noreferrer" target="_blank"><span><span><span data-custom-class="body_text">UK data protection authority</span></span></span></a><span><span><span data-custom-class="body_text">.</span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">If you are located in Switzerland, you may contact the <span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><a data-custom-class="link" href="https://www.edoeb.admin.ch/edoeb/en/home.html" rel="noopener noreferrer" target="_blank">Federal Data Protection and Information Commissioner</a></span></span></span></span></span></span>.</span></span></span></div><div><br></div><div id="withdrawconsent"><span><span><span data-custom-class="body_text"><strong><u>Withdrawing your consent:</u></strong> If we are relying on your consent to process your personal information,<span class="block-component"></span> which may be express and/or implied consent depending on the applicable law,<span class="statement-end-if-in-editor"></span> you have the right to withdraw your consent at any time. You can withdraw your consent at any time by contacting us by using the contact details provided in the section <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span></span><a data-custom-class="link" href="#contact"><span><span><span data-custom-class="body_text">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</span></span></span></a><span><span><span data-custom-class="body_text"><span class="block-component"></span>"<span class="statement-end-if-in-editor"></span> below<span class="block-component"></span> or updating your preferences<span class="statement-end-if-in-editor"></span>.</span></span></span></div><div><br></div><div><span><span data-custom-class="body_text">However, please note that this will not affect the lawfulness of the processing before its withdrawal nor,<span class="block-component"></span> when applicable law allows,<span class="statement-end-if-in-editor"></span> will it affect the processing of your personal information conducted in reliance on lawful processing grounds other than consent.<span class="block-component"></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span><span><span data-custom-class="heading_2"><strong><h3>Account Information</h3></strong></span></span><span data-custom-class="body_text"><span>If you would at any time like to review or change the information in your account or terminate your account, you can:<span class="forloop-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span><span class="question">Contact us using the contact information provided.</span></span></span></li></ul><div><span data-custom-class="body_text"><span><span class="forloop-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text"><span><span class="question">Log in to your account settings and update your user account.</span></span></span></li></ul><div><span data-custom-class="body_text"><span><span class="forloop-component"></span></span></span></div><div><span><span data-custom-class="body_text">Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, we may retain some information in our files to prevent fraud, troubleshoot problems, assist with any investigations, enforce our legal terms and/or comply with applicable legal requirements.</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span><span><span><span data-custom-class="body_text"><span><span><span><span><span data-custom-class="body_text"><span><span><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="block-component"><span><span data-custom-class="body_text"></span></span></span></div><div><br></div><div><span data-custom-class="body_text"><span>If you have questions or comments about your privacy rights, you may email us at <span class="question">app.deun@gmail.com</span>.</span></span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"></span></span></span></div><div><br></div><div id="DNT"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>10. CONTROLS FOR DO-NOT-TRACK FEATURES</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text">Most web browsers and some mobile operating systems and mobile applications include a Do-Not-Track (<span class="block-component"></span>"DNT"<span class="statement-end-if-in-editor"></span>) feature or setting you can activate to signal your privacy preference not to have data about your online browsing activities monitored and collected. At this stage, no uniform technology standard for <span class="block-component"></span>recognizing<span class="statement-end-if-in-editor"></span> and implementing DNT signals has been <span class="block-component"></span>finalized<span class="statement-end-if-in-editor"></span>. As such, we do not currently respond to DNT browser signals or any other mechanism that automatically communicates your choice not to be tracked online. If a standard for online tracking is adopted that we must follow in the future, we will inform you about that practice in a revised version of this Privacy Notice.</span></span></span><span class="block-component"></span></div><div><span><br></span></div><div><span><span data-custom-class="body_text">California law requires us to let you know how we respond to web browser DNT signals. Because there currently is not an industry or legal standard for <span class="block-component"></span>recognizing<span class="statement-end-if-in-editor"></span> or <span class="block-component"></span>honoring<span class="statement-end-if-in-editor"></span> DNT signals, we do not respond to them at this time.</span></span><span class="statement-end-if-in-editor"></span></div><div><span><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></div><div><br></div><div id="uslaws"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>11. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><strong><em>In Short: </em></strong><em>If you are a resident of<span class="block-component"></span> California, Colorado, Connecticut, Delaware, Florida, Indiana, Iowa, Kentucky, Minnesota, Montana, Nebraska, New Hampshire, New Jersey, Oregon, Tennessee, Texas, Utah, or Virginia<span class="else-block"></span>, you may have the right to request access to and receive details about the personal information we maintain about you and how we have processed it, correct inaccuracies, get a copy of, or delete your personal information. You may also have the right to withdraw your consent to our processing of your personal information. These rights may be limited in some circumstances by applicable law. More information is provided below.</em></span></span><span><strong><span data-custom-class="heading_2"><h3>Categories of Personal Information We Collect</h3></span></strong></span><span><span data-custom-class="body_text">We have collected the following categories of personal information in the past twelve (12) months:</span></span></span></div><div><br></div><table><thead><tr><th><span><span><span data-custom-class="body_text"><strong>Category</strong></span></span></span></th><th><span><span><span data-custom-class="body_text"><strong>Examples</strong></span></span></span></th><th><span><span><span data-custom-class="body_text"><strong>Collected</strong></span></span></span></th></tr></thead><tbody><tr><td><div><span><span><span data-custom-class="body_text">A. Identifiers</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, and account name</span></span></span></div></td><td><div><br></div><div><span><span><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span>YES<span class="else-block"><span class="block-component"></span></span></span></span></div><div><br></div></td></tr></tbody></table><div><span class="block-component"></span></div><table><tbody><tr><td><div><span><span><span data-custom-class="body_text">B. Personal information as defined in the California Customer Records statute</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Name, contact information, education, employment, employment history, and financial information</span></span></span></div></td><td><div><br></div><div><span><span><span data-custom-class="body_text"><span class="forloop-component"><span class="block-component"><span class="block-component"></span>YES<span class="block-component"></span></span></span></span></span></div><div><br></div></td></tr></tbody></table><div><span class="block-component"></span></div><table><tbody><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>C<span class="else-block"></span>. Protected classification characteristics under state or federal law</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Gender, age, date of birth, race and ethnicity, national origin, marital status, and other demographic data</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>D<span class="else-block"></span>. Commercial information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Transaction information, purchase history, financial details, and payment information</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>E<span class="else-block"></span>. Biometric information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Fingerprints and voiceprints</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"><span class="block-component">NO</span><span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>F<span class="else-block"></span>. Internet or other similar network activity</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Browsing history, search history, online <span class="block-component"></span>behavior<span class="statement-end-if-in-editor"></span>, interest data, and interactions with our and other websites, applications, systems, and advertisements</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>G<span class="else-block"></span>. Geolocation data</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Device location</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>H<span class="else-block"></span>. Audio, electronic, sensory, or similar information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Images and audio, video or call recordings created in connection with our business activities</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>I<span class="else-block"></span>. Professional or employment-related information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Business contact details in order to provide you our Services at a business level or job title, work history, and professional qualifications if you apply for a job with us</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>J<span class="else-block"></span>. Education Information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Student records and directory information</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span class="forloop-component"><span data-custom-class="body_text"><span class="block-component"></span><span class="block-component"></span>NO<span class="statement-end-if-in-editor"></span><span class="block-component"></span></span></div><div><br></div></td></tr><tr><td><div><span><span><span data-custom-class="body_text"><span class="block-component"></span>K<span class="else-block"></span>. Inferences drawn from collected personal information</span></span></span></div></td><td><div><span><span><span data-custom-class="body_text">Inferences drawn from any of the collected personal information listed above to create a profile or summary about, for example, an individual’s preferences and characteristics</span></span></span></div></td><td><div><br></div><div data-custom-class="body_text"><span data-custom-class="body_text"><span class="block-component"></span>NO<span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></span></span></span></span></span></span></div><div><br></div></td></tr><tr><td><span data-custom-class="body_text"><span class="block-component"></span>L<span class="else-block"></span>. Sensitive personal Information</span></td><td><span class="block-component"><span data-custom-class="body_text"></span></span></td><td><div data-empty="true"><br></div><div data-custom-class="body_text" data-empty="true"><span class="block-component"><span data-custom-class="body_text"></span>NO</span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></div><div data-empty="true"><br></div></td></tr></tbody></table><div><span class="block-component"></span></div><div><br></div><div><span><span data-custom-class="body_text">We may also collect other personal information outside of these categories through instances where you interact with us in person, online, or by phone or mail in the context of:</span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Receiving help through our customer support channels;<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Participation in customer surveys or contests; and<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Facilitation in the delivery of our Services and to respond to your inquiries.</span><span class="statement-end-if-in-editor"></span></li></ul><div><span class="block-component"><span data-custom-class="body_text"></span></span><span data-custom-class="body_text">We will use and retain the collected personal information as needed to provide the Services or for:<span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text">Category A - <span class="question">As long as the user has an account with us</span><span class="statement-end-if-in-editor"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text">Category B - <span class="question">As long as the user has an account with us</span><span class="statement-end-if-in-editor"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span data-custom-class="body_text">Category <span class="block-component"></span>H<span class="else-block"></span> - <span class="question">As long as the user has an account with us</span><span class="statement-end-if-in-editor"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span></li></ul><div><span data-custom-class="body_text"><span class="block-component"></span></span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></li></ul><div><strong><span><span data-custom-class="heading_2"><h3>Sources of Personal Information</h3></span></span></strong><span><span data-custom-class="body_text">Learn more about the sources of personal information we collect in <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span><span data-custom-class="body_text"><a data-custom-class="link" href="#infocollect"><span>WHAT INFORMATION DO WE COLLECT?</span></a></span><span><span data-custom-class="body_text"><span class="block-component"></span>"</span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></span><span><span><strong><span data-custom-class="heading_2"><h3>How We Use and Share Personal Information</h3></span></strong></span></span><span data-custom-class="body_text"><span class="block-component"></span>Learn more about how we use your personal information in the section, <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span><a data-custom-class="link" href="#infouse"><span>HOW DO WE PROCESS YOUR INFORMATION?</span></a><span data-custom-class="body_text"><span class="block-component"></span>"</span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></div><div><span><span><span data-custom-class="body_text"><strong>Will your information be shared with anyone else?</strong></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We may disclose your personal information with our service providers pursuant to a written contract between us and each service provider. Learn more about how we disclose personal information to in the section, <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span></span><a data-custom-class="link" href="#whoshare"><span><span>WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</span></span></a><span><span><span data-custom-class="body_text"><span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We may use your personal information for our own business purposes, such as for undertaking internal research for technological development and demonstration. This is not considered to be <span class="block-component"></span>"selling"<span class="statement-end-if-in-editor"></span> of your personal information.<span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We have not disclosed, sold, or shared any personal information to third parties for a business or commercial purpose in the preceding twelve (12) months. Wewill not sell or share personal information in the future belonging to website visitors, users, and other consumers.<span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"></span></span></span></span></span><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></div><div><span><strong><span data-custom-class="heading_2"><h3>Your Rights</h3></span></strong><span data-custom-class="body_text">You have rights under certain US state data protection laws. However, these rights are not absolute, and in certain cases, we may decline your request as permitted by law. These rights include:</span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to know</strong> whether or not we are processing your personal data<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to access </strong>your personal data<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to correct </strong>inaccuracies in your personal data<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to request</strong> the deletion of your personal data<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to obtain a copy </strong>of the personal data you previously shared with us<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to non-discrimination</strong> for exercising your rights<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span><strong>Right to opt out</strong> of the processing of your personal data if it is used for targeted advertising<span class="block-component"></span> (or sharing as defined under California’s privacy law)<span class="statement-end-if-in-editor"></span>, the sale of personal data, or profiling in furtherance of decisions that produce legal or similarly significant effects (<span class="block-component"></span>"profiling"<span class="statement-end-if-in-editor"></span>)<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><div><span><span data-custom-class="body_text">Depending upon the state where you live, you may also have the following rights:</span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Right to access the categories of personal data being processed (as permitted by applicable law, including Minnesota’s privacy law)<span class="statement-end-if-in-editor"></span></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Right to obtain a list of the categories of third parties to which we have disclosed personal data (as permitted by applicable law, including<span class="block-component"></span> California's and Delaware's<span class="else-block"></span> privacy law)<span class="statement-end-if-in-editor"></span></span></li></ul><div><span class="block-component"></span></div><ul><li data-custom-class="body_text"><span>Right to obtain a list of specific third parties to which we have disclosed personal data (as permitted by applicable law, including<span class="block-component"></span> Minnesota's and Oregon's<span class="else-block"></span> privacy law)</span><span class="statement-end-if-in-editor"></span></li></ul><div><span><span class="block-component"></span></span></div><ul><li data-custom-class="body_text"><span>Right to review, understand, question, and correct how personal data has been profiled (as permitted by applicable law, including Minnesota’s privacy law)<span class="statement-end-if-in-editor"></span></span></li></ul><div><span class="block-component"></span></div><ul><li data-custom-class="body_text"><span>Right to limit use and disclosure of sensitive personal data (as permitted by applicable law, including California’s privacy law)</span><span class="statement-end-if-in-editor"></span></li></ul><div><span class="block-component"></span></div><ul><li data-custom-class="body_text"><span>Right to opt out of the collection of sensitive data and personal data collected through the operation of a voice or facial recognition feature (as permitted by applicable law, including Florida’s privacy law)</span><span class="statement-end-if-in-editor"></span></li></ul><div><span><span class="statement-end-if-in-editor"></span></span><strong><span><span data-custom-class="heading_2"><h3>How to Exercise Your Rights</h3></span></span></strong><span><span><span data-custom-class="body_text">To exercise these rights, you can contact us <span class="block-component"></span>by submitting a </span></span></span><a data-custom-class="link" href="https://app.termly.io/notify/4e0ea968-9c0c-43a0-b776-ad10be0e1261" rel="noopener noreferrer" target="_blank"><span><span>data subject access request</span></span></a><span><span><span data-custom-class="body_text">, <span class="block-component"></span></span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span>by emailing us at <span class="question">app.deun@gmail.com</span>, <span class="statement-end-if-in-editor"></span><span class="block-component"></span></span><span data-custom-class="body_text"><span class="block-component"></span>by visiting <span><span class="question"><a href="https://deun.app/#/contact" target="_blank" data-custom-class="link">https://deun.app/#/contact</a></span></span>, <span class="statement-end-if-in-editor"></span><span class="block-component"><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span data-custom-class="body_text">or by referring to the contact details at the bottom of this document.</span></span></span><span class="block-component"></span><span class="block-component"></span></div><div><span><br></span></div><div><span><span data-custom-class="body_text">We will <span class="block-component"></span>honor<span class="statement-end-if-in-editor"></span> your opt-out preferences if you enact the </span></span><span data-custom-class="body_text"><a data-custom-class="link" href="https://globalprivacycontrol.org/" rel="noopener noreferrer" target="_blank"><span>Global Privacy Control</span></a></span><span><span data-custom-class="body_text"> (GPC) opt-out signal on your browser.</span></span><span class="statement-end-if-in-editor"></span></div><div><br></div><div><span><span data-custom-class="body_text">Under certain US state data protection laws, you can designate an <span class="block-component"></span>authorized<span class="statement-end-if-in-editor"></span> agent to make a request on your behalf. We may deny a request from an <span class="block-component"></span>authorized<span class="statement-end-if-in-editor"></span> agent that does not submit proof that they have been validly <span class="block-component"></span>authorized<span class="statement-end-if-in-editor"></span> to act on your behalf in accordance with applicable laws.</span><br><strong><span data-custom-class="heading_2"><h3>Request Verification</h3></span></strong><span data-custom-class="body_text">Upon receiving your request, we will need to verify your identity to determine you are the same person about whom we have the information in our system. We will only use personal information provided in your request to verify your identity or authority to make the request. However, if we cannot verify your identity from the information already maintained by us, we may request that you provide additional information for the purposes of verifying your identity and for security or fraud-prevention purposes.</span></span></div><div><span><br></span></div><div><span><span data-custom-class="body_text">If you submit the request through an <span class="block-component"></span>authorized<span class="statement-end-if-in-editor"></span> agent, we may need to collect additional information to verify your identity before processing your request and the agent will need to provide a written and signed permission from you to submit such request on your behalf.</span></span><span class="block-component"></span><span><span data-custom-class="heading_2"><strong><h3>Appeals</h3></strong></span><span data-custom-class="body_text">Under certain US state data protection laws, if we decline to take action regarding your request, you may appeal our decision by emailing us at <span class="block-component"></span><span class="question">app.deun@gmail.com</span><span class="else-block"></span>. We will inform you in writing of any action taken or not taken in response to the appeal, including a written explanation of the reasons for the decisions. If your appeal is denied, you may submit a complaint to your state attorney general.</span><span class="statement-end-if-in-editor"></span></span><span><span><span><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span></span></span></span></span></span></span></span></span></span></span><span class="block-component"></span><span><strong><span data-custom-class="heading_2"><h3>California <span class="block-component"></span>"Shine The Light"<span class="statement-end-if-in-editor"></span> Law</h3></span></strong><span data-custom-class="body_text">California Civil Code Section 1798.83, also known as the <span class="block-component"></span>"Shine The Light"<span class="statement-end-if-in-editor"></span> law, permits our users who are California residents to request and obtain from us, once a year and free of charge, information about categories of personal information (if any) we disclosed to third parties for direct marketing purposes and the names and addresses of all third parties with which we shared personal information in the immediately preceding calendar year. If you are a California resident and would like to make such a request, please submit your request in writing to us by using the contact details provided in the section <span class="block-component"></span>"<span class="statement-end-if-in-editor"></span></span></span><span data-custom-class="body_text"><a data-custom-class="link" href="#contact"><span>HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</span></a></span><span><span data-custom-class="body_text"><span class="block-component"></span>"</span><span class="statement-end-if-in-editor"><span data-custom-class="body_text"></span></span></span><span class="statement-end-if-in-editor"></span><span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"><span data-custom-class="body_text"><span><span><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"><span class="statement-end-if-in-editor"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="block-component"></span><span class="block-component"></span></div><div><br></div><div id="policyupdates"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>12. DO WE MAKE UPDATES TO THIS NOTICE?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><em><strong>In Short: </strong>Yes, we will update this notice as necessary to stay compliant with relevant laws.</em></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text">We may update this Privacy Notice from time to time. The updated version will be indicated by an updated <span class="block-component"></span>"Revised"<span class="statement-end-if-in-editor"></span> date at the top of this Privacy Notice. If we make material changes to this Privacy Notice, we may notify you either by prominently posting a notice of such changes or by directly sending you a notification. We encourage you to review this Privacy Notice frequently to be informed of how we are protecting your information.</span></span></span></div><div><br></div><div id="contact"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>13. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text">If you have questions or comments about this notice, you may <span><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span>email us at <span class="question">app.deun@gmail.com or </span><span class="statement-end-if-in-editor"><span class="block-component"></span></span></span></span><span><span><span data-custom-class="body_text">contact us by post at:</span></span></span></span></span></span></div><div><br></div><div><span><span><span data-custom-class="body_text"><span><span><span><span data-custom-class="body_text"><span class="question">Jakob Auer</span></span></span></span></span></span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span class="block-component"></span></span></span></span></span></span></div><div><span><span data-custom-class="body_text"><span class="question">Kurzbauergasse 2/Top 33</span><span><span><span class="block-component"></span></span></span></span></span></span></div><div><span><span data-custom-class="body_text"><span class="question">Vienna</span><span><span><span class="block-component"></span>, <span class="question">Vienna</span><span class="statement-end-if-in-editor"></span><span class="block-component"></span> <span class="question">1020</span><span class="statement-end-if-in-editor"></span><span class="block-component"></span><span class="block-component"></span></span></span></span></span></span></div><div><span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span class="block-component"></span></span></span></span><span class="question">Austria</span><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"></span></span></span></span></span><span class="statement-end-if-in-editor"></span></span></span></span><span data-custom-class="body_text"><span><span><span class="statement-end-if-in-editor"></span></span></span></span></span></span></span></span></span><span data-custom-class="body_text"><span><span data-custom-class="body_text"><span><span class="statement-end-if-in-editor"><span><span><span data-custom-class="body_text"><span class="block-component"><span class="block-component"></span></span></span></span></span></span></span><span class="block-component"></span><span><span data-custom-class="body_text"><span><span><span data-custom-class="body_text"><span class="statement-end-if-in-editor"><span class="block-component"></span></span></span></div><div><br></div><div id="request"><span><span><span><span><span id="control"><strong><span data-custom-class="heading_1"><h2>14. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</h2></span></strong></span></span></span></span></span><span><span><span data-custom-class="body_text"><span class="block-component"></span>Based on the applicable laws of your country<span class="block-component"></span> or state of residence in the US<span class="statement-end-if-in-editor"></span>, you may<span class="else-block"><span class="block-component"> have the right to request access to the personal information we collect from you, details about how we have processed it, correct inaccuracies, or delete your personal information. You may also have the right to <span class="block-component"></span>withdraw your consent to our processing of your personal information. These rights may be limited in some circumstances by applicable law. To request to review, update, or delete your personal information, please <span class="block-component"></span>fill out and submit a </span><span><span data-custom-class="body_text"><span><a data-custom-class="link" href="https://app.termly.io/notify/4e0ea968-9c0c-43a0-b776-ad10be0e1261" rel="noopener noreferrer" target="_blank">data subject access request</a></span></span></span><span class="block-component"><span data-custom-class="body_text"></span></span></span><span data-custom-class="body_text">.</span></span></span></div>
+  <!-- HEADER -->
+  <header style="padding:130px 24px 44px;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div class="pp-eyebrow">Legal</div>
+      <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.4rem,5vw,3.4rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;margin:0 0 18px;">Privacy policy</h1>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--muted);">
+          <span class="mi" style="font-size:16px;color:var(--accent);">event</span> Last updated March 23, 2025
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--muted);">
+          <span class="mi" style="font-size:16px;color:var(--accent);">shield</span> We don't sell your data
+        </span>
       </div>
-  </main>
+    </div>
+  </header>
 
-  <footer>
-    <div class="container">
-      <div class="footer-left">
-        <img src="assets/icon-512.png" alt="deun" width="28" height="28">
-        deun
+  <div class="pp-two" style="margin:0 auto;padding:0 24px 90px;">
+
+    <!-- DESKTOP TOC -->
+    <aside class="pp-toc-wrap-desktop">
+      <div class="pp-toc-wrap">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 10px 10px;">Contents</div>
+        <nav class="pp-toc">
+          <a href="#s1"><span class="n">1</span> What information do we collect?</a>
+          <a href="#s2"><span class="n">2</span> How do we process your information?</a>
+          <a href="#s3"><span class="n">3</span> Legal bases for processing</a>
+          <a href="#s4"><span class="n">4</span> When &amp; with whom we share</a>
+          <a href="#s5"><span class="n">5</span> Third-party websites</a>
+          <a href="#s6"><span class="n">6</span> Social logins</a>
+          <a href="#s7"><span class="n">7</span> How long we keep information</a>
+          <a href="#s8"><span class="n">8</span> How we keep it safe</a>
+          <a href="#s9"><span class="n">9</span> Your privacy rights</a>
+          <a href="#s10"><span class="n">10</span> Do-Not-Track features</a>
+          <a href="#s11"><span class="n">11</span> US residents' rights</a>
+          <a href="#s12"><span class="n">12</span> Updates to this notice</a>
+          <a href="#s13"><span class="n">13</span> How to contact us</a>
+          <a href="#s14"><span class="n">14</span> Review, update, or delete data</a>
+        </nav>
       </div>
-      <ul class="footer-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="https://app.deun.app" target="_blank" rel="noopener">Web App</a></li>
-      </ul>
-      <div class="footer-copy">&copy; 2025 deun. All rights reserved.</div>
+    </aside>
+
+    <!-- BODY -->
+    <div style="max-width:760px;">
+      <div class="pp-body">
+
+        <!-- INTRO -->
+        <div style="background:var(--card);border-radius:20px;padding:26px 28px;box-shadow:var(--shadow);margin-bottom:14px;">
+          <p style="margin-bottom:14px;">This Privacy Notice for <strong>Jakob Auer</strong> ("we," "us," or "our") describes how and why we might access, collect, store, use, and/or share ("process") your personal information when you use our services ("Services"), including when you:</p>
+          <ul style="margin-bottom:14px;">
+            <li>Visit our website at <a href="https://deun.app" target="_blank" rel="noopener">https://deun.app</a>, or any website of ours that links to this Privacy Notice</li>
+            <li>Download and use our mobile application (Deun), or any other application of ours that links to this Privacy Notice</li>
+            <li>Engage with us in other related ways, including any sales, marketing, or events</li>
+          </ul>
+          <p style="margin:0;"><strong>Questions or concerns?</strong> Reading this Privacy Notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have questions, contact us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a>.</p>
+        </div>
+
+        <!-- KEY POINTS -->
+        <div style="background:var(--accent-tint);border-radius:20px;padding:26px 28px;margin-bottom:14px;">
+          <h2 class="pp-h2" style="margin-bottom:12px;">Summary of key points</h2>
+          <p style="margin-bottom:14px;color:var(--ink-soft);">This summary provides key points from our Privacy Notice. You can find more detail using the table of contents below.</p>
+          <ul style="margin:0;">
+            <li><strong>What information do we process?</strong> We may process personal information depending on how you interact with us — the choices you make and the features you use.</li>
+            <li><strong>Do we process sensitive information?</strong> No, we do not process sensitive personal information.</li>
+            <li><strong>Do we collect information from third parties?</strong> No, we do not collect any information from third parties.</li>
+            <li><strong>How do we process your information?</strong> To provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.</li>
+            <li><strong>When do we share information?</strong> Only in specific situations and with specific third parties.</li>
+            <li><strong>How do we keep it safe?</strong> With organizational and technical measures — though no system can be guaranteed 100% secure.</li>
+            <li><strong>What are your rights?</strong> Depending on where you live, applicable law may give you certain rights over your personal information.</li>
+          </ul>
+        </div>
+
+        <!-- MOBILE TOC -->
+        <div class="pp-toc-inline" style="background:var(--card);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow);margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 6px 8px;">Table of contents</div>
+          <nav class="pp-toc">
+            <a href="#s1"><span class="n">1</span> What information do we collect?</a>
+            <a href="#s2"><span class="n">2</span> How do we process your information?</a>
+            <a href="#s3"><span class="n">3</span> Legal bases for processing</a>
+            <a href="#s4"><span class="n">4</span> When &amp; with whom we share</a>
+            <a href="#s5"><span class="n">5</span> Third-party websites</a>
+            <a href="#s6"><span class="n">6</span> Social logins</a>
+            <a href="#s7"><span class="n">7</span> How long we keep information</a>
+            <a href="#s8"><span class="n">8</span> How we keep it safe</a>
+            <a href="#s9"><span class="n">9</span> Your privacy rights</a>
+            <a href="#s10"><span class="n">10</span> Do-Not-Track features</a>
+            <a href="#s11"><span class="n">11</span> US residents' rights</a>
+            <a href="#s12"><span class="n">12</span> Updates to this notice</a>
+            <a href="#s13"><span class="n">13</span> How to contact us</a>
+            <a href="#s14"><span class="n">14</span> Review, update, or delete data</a>
+          </nav>
+        </div>
+
+        <!-- 1 -->
+        <section class="pp-section" id="s1">
+          <h2 class="pp-h2">1. What information do we collect?</h2>
+          <p><strong>Personal information you disclose to us.</strong> <em>In short: We collect personal information that you provide to us.</em></p>
+          <p>We collect personal information that you voluntarily provide when you register on the Services, express an interest in our products and Services, participate in activities on the Services, or otherwise contact us. The personal information we collect may include:</p>
+          <ul>
+            <li>names</li>
+            <li>email addresses</li>
+            <li>usernames</li>
+          </ul>
+          <p><strong>Sensitive information.</strong> We do not process sensitive information.</p>
+          <p><strong>Social media login data.</strong> We may provide you the option to register using your existing social media account details. If you choose this, we will collect certain profile information as described in "How do we handle your social logins?" below.</p>
+          <p><strong>Application data.</strong> If you use our application(s), we may collect the following if you grant access or permission:</p>
+          <ul>
+            <li><strong>Push notifications.</strong> We may request to send you push notifications regarding your account or certain features. You can opt out in your device's settings.</li>
+          </ul>
+          <p>This information is primarily needed to maintain the security and operation of our application(s), for troubleshooting, and for internal analytics and reporting.</p>
+          <p><strong>Google API.</strong> Our use of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements.</p>
+        </section>
+
+        <!-- 2 -->
+        <section class="pp-section" id="s2">
+          <h2 class="pp-h2">2. How do we process your information?</h2>
+          <p><em>In short: We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.</em></p>
+          <p>We process your personal information for a variety of reasons, depending on how you interact with our Services, including:</p>
+          <ul>
+            <li><strong>To facilitate account creation and authentication</strong> and otherwise manage user accounts, so you can create and log in to your account and keep it in working order.</li>
+            <li><strong>To save or protect an individual's vital interest,</strong> such as to prevent harm.</li>
+          </ul>
+        </section>
+
+        <!-- 3 -->
+        <section class="pp-section" id="s3">
+          <h2 class="pp-h2">3. What legal bases do we rely on?</h2>
+          <p><em>In short: We only process your personal information when we believe it is necessary and we have a valid legal reason to do so under applicable law.</em></p>
+          <p><strong>If you are located in the EU or UK,</strong> the GDPR and UK GDPR require us to explain the valid legal bases we rely on. These may include:</p>
+          <ul>
+            <li><strong>Consent.</strong> You have given us permission to use your personal information for a specific purpose, which you can withdraw at any time.</li>
+            <li><strong>Legal obligations.</strong> Where necessary for compliance with our legal obligations, such as cooperating with law enforcement or defending our legal rights.</li>
+            <li><strong>Vital interests.</strong> Where necessary to protect your vital interests or those of a third party.</li>
+          </ul>
+          <p><strong>If you are located in Canada,</strong> we may process your information with your express or implied consent, which you can withdraw at any time. In some exceptional cases we may be legally permitted to process your information without consent — for example, for fraud detection and prevention, or where disclosure is required to comply with a subpoena, warrant, or court order.</p>
+        </section>
+
+        <!-- 4 -->
+        <section class="pp-section" id="s4">
+          <h2 class="pp-h2">4. When and with whom do we share your information?</h2>
+          <p><em>In short: We may share information in specific situations described in this section and/or with the following third parties.</em></p>
+          <ul>
+            <li><strong>Business transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
+          </ul>
+        </section>
+
+        <!-- 5 -->
+        <section class="pp-section" id="s5">
+          <h2 class="pp-h2">5. What is our stance on third-party websites?</h2>
+          <p><em>In short: We are not responsible for the safety of any information that you share with third parties that we may link to or who advertise on our Services.</em></p>
+          <p>The Services may link to third-party websites, online services, or mobile applications and/or contain advertisements from third parties that are not affiliated with us. We do not make any guarantee regarding such third parties and will not be liable for any loss or damage caused by their use. The inclusion of a link does not imply endorsement. Any data collected by third parties is not covered by this Privacy Notice — you should review their policies and contact them directly with any questions.</p>
+        </section>
+
+        <!-- 6 -->
+        <section class="pp-section" id="s6">
+          <h2 class="pp-h2">6. How do we handle your social logins?</h2>
+          <p><em>In short: If you choose to register or log in using a social media account, we may have access to certain information about you.</em></p>
+          <p>Where you register or log in using third-party social media account details, we will receive certain profile information from your provider — often your name, email address, friends list, and profile picture. We will use the information we receive only for the purposes described in this Privacy Notice. We do not control, and are not responsible for, other uses of your personal information by your social media provider. We recommend you review their privacy notice.</p>
+        </section>
+
+        <!-- 7 -->
+        <section class="pp-section" id="s7">
+          <h2 class="pp-h2">7. How long do we keep your information?</h2>
+          <p><em>In short: We keep your information for as long as necessary to fulfill the purposes outlined in this Privacy Notice unless otherwise required by law.</em></p>
+          <p>We will only keep your personal information for as long as necessary for the purposes set out here, unless a longer retention period is required or permitted by law. No purpose in this notice will require us keeping your personal information for longer than the period in which users have an account with us. When we have no ongoing legitimate business need, we will either delete or anonymize it, or securely store and isolate it from further processing until deletion is possible.</p>
+        </section>
+
+        <!-- 8 -->
+        <section class="pp-section" id="s8">
+          <h2 class="pp-h2">8. How do we keep your information safe?</h2>
+          <p><em>In short: We aim to protect your personal information through a system of organizational and technical security measures.</em></p>
+          <p>We have implemented appropriate and reasonable technical and organizational security measures. However, no electronic transmission over the Internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise that unauthorized third parties will never defeat our security. Transmission of personal information to and from our Services is at your own risk. You should only access the Services within a secure environment.</p>
+        </section>
+
+        <!-- 9 -->
+        <section class="pp-section" id="s9">
+          <h2 class="pp-h2">9. What are your privacy rights?</h2>
+          <p><em>In short: Depending on your state or region of residence, you may have rights that allow you greater access to and control over your personal information.</em></p>
+          <p>In some regions (like the EEA, UK, Switzerland, and Canada) you have certain rights under applicable data protection laws. These may include the right to request access to and obtain a copy of your personal information, request rectification or erasure, restrict processing, data portability, and not to be subject to automated decision-making. To make a request, contact us using the details in section 13.</p>
+          <p>If you are located in the EEA or UK and believe we are unlawfully processing your personal information, you have the right to complain to your Member State or UK data protection authority. If you are in Switzerland, you may contact the Federal Data Protection and Information Commissioner.</p>
+          <p><strong>Withdrawing your consent.</strong> If we rely on your consent, you may withdraw it at any time by contacting us or updating your preferences. This will not affect the lawfulness of processing before withdrawal.</p>
+          <p><strong>Account information.</strong> To review or change the information in your account or terminate it, you can contact us using the information provided, or log in to your account settings and update your account. Upon your request to terminate, we will deactivate or delete your account, though we may retain some information to prevent fraud, troubleshoot, assist investigations, or comply with legal requirements.</p>
+          <p>If you have questions about your privacy rights, email us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a>.</p>
+        </section>
+
+        <!-- 10 -->
+        <section class="pp-section" id="s10">
+          <h2 class="pp-h2">10. Controls for Do-Not-Track features</h2>
+          <p>Most web browsers and some mobile operating systems include a Do-Not-Track ("DNT") feature you can activate to signal your privacy preference. At this stage, no uniform technology standard for recognizing and implementing DNT signals has been finalized, so we do not currently respond to DNT browser signals. California law requires us to note that because there is currently no industry or legal standard for recognizing DNT signals, we do not respond to them at this time.</p>
+        </section>
+
+        <!-- 11 -->
+        <section class="pp-section" id="s11">
+          <h2 class="pp-h2">11. Do United States residents have specific privacy rights?</h2>
+          <p><em>In short: If you are a resident of certain US states, you may have the right to request access to and receive details about the personal information we maintain, correct inaccuracies, get a copy of, or delete your personal information.</em></p>
+          <p><strong>Categories of personal information we collect.</strong> We have collected the following categories in the past twelve (12) months:</p>
+          <div style="overflow-x:auto;">
+            <table class="pp-table">
+              <thead><tr><th>Category</th><th>Examples</th><th style="text-align:right;">Collected</th></tr></thead>
+              <tbody>
+                <tr><td>A. Identifiers</td><td>Contact details such as real name, alias, address, phone number, unique personal identifier, IP address, email address, account name</td><td style="text-align:right;"><span class="pp-yes"><span class="mi" style="font-size:15px;">check_circle</span> Yes</span></td></tr>
+                <tr><td>B. Customer records</td><td>Name, contact information, education, employment history, and financial information</td><td style="text-align:right;"><span class="pp-yes"><span class="mi" style="font-size:15px;">check_circle</span> Yes</span></td></tr>
+                <tr><td>C. Protected classifications</td><td>Gender, age, date of birth, race, ethnicity, national origin, marital status</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>D. Commercial information</td><td>Transaction information, purchase history, financial details, payment information</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>E. Biometric information</td><td>Fingerprints and voiceprints</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>F. Internet or network activity</td><td>Browsing history, search history, online behavior, interest data</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>G. Geolocation data</td><td>Device location</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>H. Audio / sensory information</td><td>Images and audio, video or call recordings created in connection with our business activities</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>I. Professional / employment info</td><td>Business contact details, job title, work history, professional qualifications</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>J. Education information</td><td>Student records and directory information</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>K. Inferences</td><td>Inferences drawn to create a profile about preferences and characteristics</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+                <tr><td>L. Sensitive personal information</td><td>—</td><td style="text-align:right;"><span class="pp-no">No</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>We will use and retain the collected personal information as needed to provide the Services or for: Category A, B, and H — as long as the user has an account with us.</p>
+          <p>We have not disclosed, sold, or shared any personal information to third parties for a business or commercial purpose in the preceding twelve (12) months, and we will not sell or share personal information in the future belonging to website visitors, users, and other consumers.</p>
+          <p><strong>Your rights.</strong> You have rights under certain US state data protection laws, including the right to know whether we are processing your personal data, to access it, to correct inaccuracies, to request deletion, to obtain a copy, and to non-discrimination for exercising your rights. Depending on your state, you may also have the right to opt out of processing for targeted advertising, the sale of personal data, or profiling.</p>
+          <p><strong>How to exercise your rights.</strong> Submit a data subject access request, email us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a>, or visit <a href="https://deun.app/#/contact" target="_blank" rel="noopener">https://deun.app/#/contact</a>. We will honor your opt-out preferences if you enact the Global Privacy Control (GPC) signal on your browser.</p>
+          <p><strong>Appeals.</strong> If we decline to act on your request, you may appeal by emailing us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a>. If your appeal is denied, you may submit a complaint to your state attorney general.</p>
+        </section>
+
+        <!-- 12 -->
+        <section class="pp-section" id="s12">
+          <h2 class="pp-h2">12. Do we make updates to this notice?</h2>
+          <p><em>In short: Yes, we will update this notice as necessary to stay compliant with relevant laws.</em></p>
+          <p>We may update this Privacy Notice from time to time. The updated version will be indicated by an updated "Revised" date at the top. If we make material changes, we may notify you by prominently posting a notice or by directly sending you a notification. We encourage you to review this Privacy Notice frequently.</p>
+        </section>
+
+        <!-- 13 -->
+        <section class="pp-section" id="s13">
+          <h2 class="pp-h2">13. How can you contact us about this notice?</h2>
+          <p>If you have questions or comments about this notice, you may email us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a> or contact us by post at:</p>
+          <div style="background:var(--card);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow);font-weight:600;color:var(--ink);line-height:1.7;">
+            Jakob Auer<br>
+            Kurzbauergasse 2/Top 33<br>
+            Vienna, Vienna 1020<br>
+            Austria
+          </div>
+        </section>
+
+        <!-- 14 -->
+        <section class="pp-section" id="s14">
+          <h2 class="pp-h2">14. How can you review, update, or delete your data?</h2>
+          <p>Based on the applicable laws of your country or state, you may have the right to request access to the personal information we collect, details about how we process it, correct inaccuracies, or delete your personal information. You may also have the right to withdraw your consent. To request to review, update, or delete your personal information, please fill out and submit a data subject access request, or email us at <a href="mailto:app.deun@gmail.com">app.deun@gmail.com</a>.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="padding:40px 24px;border-top:1px solid var(--line);">
+    <div style="max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <a href="index.html" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);">
+        <img src="assets/icon-512.png" alt="deun" style="width:28px;height:28px;border-radius:8px;display:block;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;">deun</span>
+      </a>
+      <div style="display:flex;gap:24px;">
+        <a href="index.html" class="foot-link" style="text-decoration:none;color:var(--muted);font-size:.88rem;font-weight:600;">Home</a>
+        <a href="index.html#download" class="foot-link" style="text-decoration:none;color:var(--muted);font-size:.88rem;font-weight:600;">Download</a>
+      </div>
+      <div style="font-size:.8rem;color:var(--faint);font-weight:500;">© 2026 deun · Simply split fairly.</div>
     </div>
   </footer>
 
-  <script>
-    var themeToggle = document.getElementById('theme-toggle');
-    var storedTheme = localStorage.getItem('deun-theme');
-    if (storedTheme) {
-      document.documentElement.setAttribute('data-theme', storedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      document.documentElement.setAttribute('data-theme', 'light');
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function applyTheme(next) {
+    if (next === 'dark') root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+    try { localStorage.setItem('deun-theme', next); } catch (e) {}
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', next === 'dark' ? '#121311' : '#F4F3EF');
+  }
+  function toggleTheme(e) {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    var btn = e && e.currentTarget;
+    var x = window.innerWidth - 40, y = 40;
+    if (btn && btn.getBoundingClientRect) {
+      var r = btn.getBoundingClientRect();
+      x = r.left + r.width / 2; y = r.top + r.height / 2;
     }
-    themeToggle.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('deun-theme', next);
-    });
-  </script>
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) { applyTheme(next); return; }
+    var t = document.startViewTransition(function () { applyTheme(next); });
+    t.ready.then(function () {
+      var endR = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+      root.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + endR + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 560, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    }).catch(function () {});
+  }
+  [].forEach.call(document.querySelectorAll('[data-theme-toggle]'), function (el) {
+    el.addEventListener('click', toggleTheme);
+  });
+})();
+</script>
 
 </body>
 </html>
