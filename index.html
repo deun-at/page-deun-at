@@ -3,11 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- German browsers (or a saved DE choice) go to /de/; the language switch saves the choice -->
+  <script>
+    (function () {
+      var lang = null;
+      try { lang = localStorage.getItem('deun-lang'); } catch (e) {}
+      if (!location.hash && (lang === 'de' || (!lang && /^de\b/i.test(navigator.language || '')))) {
+        location.replace('de/' + location.search);
+      }
+    })();
+  </script>
+
   <title>deun — Simply Split Fairly | Expense Splitting App</title>
   <meta name="description" content="deun makes splitting expenses with friends effortless. Create groups, add expenses, and settle up — fairly. Available on iOS, Android, and the web. No blocking ads, no popups, no data selling.">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="expense splitting, split bills, group expenses, shared costs, bill splitter, flatmate expenses, trip costs, deun app">
   <link rel="canonical" href="https://deun.app/">
+  <link rel="alternate" hreflang="en" href="https://deun.app/">
+  <link rel="alternate" hreflang="de" href="https://deun.app/de/">
+  <link rel="alternate" hreflang="x-default" href="https://deun.app/">
   <meta name="theme-color" content="#F4F3EF">
 
   <!-- Open Graph -->
@@ -230,6 +245,7 @@
         <a href="#features" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">Features</a>
         <a href="#how" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">How it works</a>
         <a href="#download" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">Download</a>
+        <a href="de/" data-lang-switch="de" hreflang="de" lang="de" title="Deutsch" class="icon-btn" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.02em;">DE</a>
         <div data-theme-toggle class="icon-btn" title="Toggle theme" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);">
           <span class="mi th-moon" style="font-size:19px;">dark_mode</span>
           <span class="mi th-sun" style="font-size:19px;">light_mode</span>
@@ -240,6 +256,7 @@
         </a>
       </div>
       <div class="menu-btn" style="align-items:center;gap:8px;">
+        <a href="de/" data-lang-switch="de" hreflang="de" lang="de" title="Deutsch" class="icon-btn" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.02em;">DE</a>
         <div data-theme-toggle class="icon-btn" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);">
           <span class="mi th-moon" style="font-size:19px;">dark_mode</span>
           <span class="mi th-sun" style="font-size:19px;">light_mode</span>
@@ -618,6 +635,13 @@
       heroSec.addEventListener('mouseleave', function () { phone.style.transform = ''; });
     }
   }
+
+  // ── Language switch remembers the choice for the redirect in <head> ──
+  [].forEach.call(document.querySelectorAll('[data-lang-switch]'), function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem('deun-lang', a.getAttribute('data-lang-switch')); } catch (e) {}
+    });
+  });
 
   // ── QR codes (fixed dark modules on white, both themes) ──
   function renderQR(id, url) {
