@@ -7,15 +7,15 @@
   <meta name="description" content="deun makes splitting expenses with friends effortless. Create groups, add expenses, and settle up — fairly. Available on iOS, Android, and the web. No blocking ads, no popups, no data selling.">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="expense splitting, split bills, group expenses, shared costs, bill splitter, flatmate expenses, trip costs, deun app">
-  <link rel="canonical" href="https://deun.app">
+  <link rel="canonical" href="https://www.deun.app/">
   <meta name="theme-color" content="#F4F3EF">
 
   <!-- Open Graph -->
   <meta property="og:title" content="deun — Simply Split Fairly">
   <meta property="og:description" content="Split expenses with friends effortlessly. Create groups, track costs, and settle up — fairly. Available on iOS, Android, and the web.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://deun.app">
-  <meta property="og:image" content="https://deun.app/assets/icon-512.png">
+  <meta property="og:url" content="https://www.deun.app/">
+  <meta property="og:image" content="https://www.deun.app/assets/icon-512.png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta property="og:site_name" content="deun">
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="deun — Simply Split Fairly">
   <meta name="twitter:description" content="Split expenses with friends effortlessly. Fair, simple, private. Available on iOS, Android, and the web.">
-  <meta name="twitter:image" content="https://deun.app/assets/icon-512.png">
+  <meta name="twitter:image" content="https://www.deun.app/assets/icon-512.png">
 
   <!-- iOS Smart App Banner -->
   <meta name="apple-itunes-app" content="app-id=6742751703">
@@ -41,7 +41,7 @@
     "@type": "SoftwareApplication",
     "name": "deun",
     "description": "Split expenses with friends effortlessly. Create groups, track costs, and settle up — fairly.",
-    "url": "https://deun.app",
+    "url": "https://www.deun.app/",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "iOS, Android, Web",
     "offers": {
@@ -49,8 +49,7 @@
       "price": "0",
       "priceCurrency": "USD"
     },
-    "installUrl": "https://apps.apple.com/hr/app/deun/id6742751703",
-    "aggregateRating": null
+    "installUrl": "https://apps.apple.com/app/deun/id6742751703"
   }
   </script>
 
@@ -73,10 +72,13 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <!-- Icon font subset: keep icon_names (alphabetical) in sync with the .mi glyphs used below -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add,add_card,arrow_downward,battery_full,call_split,check_circle,close,dark_mode,document_scanner,done_all,flight,group,group_add,groups,home,light_mode,lock,menu,receipt_long,savings,settings,signal_cellular_alt,star,wifi&display=block" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add,add_card,arrow_downward,battery_full,call_split,check_circle,close,dark_mode,document_scanner,done_all,flight,group,group_add,groups,home,light_mode,lock,menu,receipt_long,savings,settings,signal_cellular_alt,star,wifi&display=block"></noscript>
 
   <!-- QR code generator -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="assets/qrcode.min.js" defer></script>
 
   <style>
     *{box-sizing:border-box;}
@@ -84,16 +86,16 @@
     html{scroll-behavior:smooth;scroll-padding-top:84px;}
     a{color:inherit;}
     img{max-width:100%;}
-    .mi{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;display:inline-block;}
+    .mi{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;display:inline-block;width:1em;height:1em;overflow:hidden;white-space:nowrap;}
 
     /* ── Theme tokens (light default; dark toggled on <html>) ── */
     :root{
       --bg:#F4F3EF; --surface:#FBFAF7; --card:#FFFFFF;
       --ink:#16181A; --ink-soft:#3C3A35;
-      --muted:#7E7A70; --faint:#A39F94;
+      --muted:#625E56; --faint:#706C63;
       --line:rgba(20,18,12,.08); --line-strong:#E4E1D8;
       --accent:#5750E6; --accent-tint:#ECEBFC;
-      --green:#1A8F5E; --red:#D85A47; --amber:#C98A2E;
+      --green:#167A50; --red:#B9432F; --amber:#C98A2E;
       --shadow:0 2px 4px rgba(20,18,12,.04);
       --shadow-lift:0 16px 34px -18px rgba(20,18,12,.22);
       --nav-bg:rgba(244,243,239,.82);
@@ -101,7 +103,7 @@
     [data-theme="dark"]{
       --bg:#121311; --surface:#1A1B19; --card:#1F211E;
       --ink:#F2F1EC; --ink-soft:#CFCEC8;
-      --muted:#9A968C; --faint:#7C786F;
+      --muted:#9A968C; --faint:#8E8A80;
       --line:rgba(255,255,255,.09); --line-strong:#33352F;
       --accent:#7A74F0; --accent-tint:rgba(122,116,240,.16);
       --green:#4ED99B; --red:#F2937F; --amber:#F2C97F;
@@ -216,7 +218,7 @@
   <nav class="site-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--nav-bg);border-bottom:1px solid var(--line);">
     <div style="max-width:1140px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;">
       <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);">
-        <img src="assets/icon-512.png" alt="deun" style="width:34px;height:34px;border-radius:10px;box-shadow:0 8px 16px -8px rgba(87,80,230,.55);display:block;">
+        <img src="assets/icon-96.webp" alt="deun" width="34" height="34" style="width:34px;height:34px;border-radius:10px;box-shadow:0 8px 16px -8px rgba(87,80,230,.55);display:block;">
         <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.02em;">deun</span>
       </a>
       <div class="nav-links" style="align-items:center;gap:30px;">
@@ -256,6 +258,7 @@
     </div>
   </div>
 
+  <main>
   <!-- ===================== HERO ===================== -->
   <section id="top" style="padding:138px 24px 70px;">
     <div class="hero-grid" style="max-width:1140px;margin:0 auto;">
@@ -267,11 +270,11 @@
         <h1 style="width:100%;font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.9rem,6vw,4.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:0 0 20px;">Simply split<br><span style="color:var(--accent);">fairly.</span></h1>
         <p style="font-size:clamp(1.02rem,1.6vw,1.22rem);color:var(--muted);line-height:1.6;max-width:480px;margin:0 0 36px;font-weight:500;">With friends, flatmates and trips. Add an expense or scan a receipt — deun works out who owes whom, down to the cent. No paywalls, no premium tiers.</p>
         <div class="hero-actions" style="display:flex;gap:13px;flex-wrap:wrap;">
-          <a href="https://apps.apple.com/hr/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--ink);color:var(--bg);">
+          <a href="https://apps.apple.com/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--ink);color:var(--bg);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.89C10.1 6.87 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
             <div style="text-align:left;line-height:1.15;"><div style="font-size:10.5px;opacity:.7;font-weight:600;">Download on the</div><div style="font-size:15.5px;font-weight:700;">App Store</div></div>
           </a>
-          <a href="https://play.google.com/store/apps/details?id=app.deun.www&pcampaignid=web_share" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--card);color:var(--ink);border:1px solid var(--line-strong);box-shadow:var(--shadow);">
+          <a href="https://play.google.com/store/apps/details?id=app.deun.www&amp;referrer=utm_source%3Ddeun.app%26utm_medium%3Dwebsite%26utm_campaign%3Dhero" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--card);color:var(--ink);border:1px solid var(--line-strong);box-shadow:var(--shadow);">
             <svg width="22" height="22" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path><path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path><path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path><path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path></svg>
             <div style="text-align:left;line-height:1.15;"><div style="font-size:10.5px;color:var(--faint);font-weight:600;">Get it on</div><div style="font-size:15.5px;font-weight:700;">Google Play</div></div>
           </a>
@@ -294,7 +297,7 @@
             <div style="flex:1;overflow:hidden;padding:4px 16px 14px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 2px 14px;">
                 <div>
-                  <div class="p-faint" style="font-size:11px;color:#A39F94;font-weight:600;">Good evening</div>
+                  <div class="p-faint" style="font-size:11px;color:#706C63;font-weight:600;">Good evening</div>
                   <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1;">Maya</div>
                 </div>
                 <div class="p-accent-bg" style="width:36px;height:36px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">M</div>
@@ -328,9 +331,9 @@
                     <div style="display:flex;">
                       <div style="width:22px;height:22px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">M</div>
                       <div style="width:22px;height:22px;border-radius:50%;background:#D9694E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">S</div>
-                      <div style="width:22px;height:22px;border-radius:50%;background:#1A8F5E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">J</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#167A50;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">J</div>
                     </div>
-                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#9A968C;font-weight:500;">you're owed</span><span class="p-pos" style="font-size:14px;font-weight:700;color:#1A8F5E;font-variant-numeric:tabular-nums;">€64.00</span></div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#706C63;font-weight:500;">you're owed</span><span class="p-pos" style="font-size:14px;font-weight:700;color:#167A50;font-variant-numeric:tabular-nums;">€64.00</span></div>
                   </div>
                 </div>
                 <div class="p-card" style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
@@ -344,15 +347,15 @@
                       <div style="width:22px;height:22px;border-radius:50%;background:#2E8BB8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">A</div>
                       <div style="width:22px;height:22px;border-radius:50%;background:#E0A52E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">R</div>
                     </div>
-                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#9A968C;font-weight:500;">you owe</span><span class="p-neg" style="font-size:14px;font-weight:700;color:#D85A47;font-variant-numeric:tabular-nums;">€18.50</span></div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#706C63;font-weight:500;">you owe</span><span class="p-neg" style="font-size:14px;font-weight:700;color:#B9432F;font-variant-numeric:tabular-nums;">€18.50</span></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="p-tabbar" style="flex:0 0 auto;height:60px;background:#FBFAF7;border-top:1px solid rgba(20,18,12,.06);display:flex;align-items:center;justify-content:space-around;padding:0 18px 8px;">
               <div class="p-accent" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5750E6;"><span class="mi" style="font-size:23px;">receipt_long</span><span style="font-size:9px;font-weight:700;">Groups</span></div>
-              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">group</span><span style="font-size:9px;font-weight:600;">Friends</span></div>
-              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#ADA99F;"><span class="mi" style="font-size:23px;">settings</span><span style="font-size:9px;font-weight:600;">Settings</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#706C63;"><span class="mi" style="font-size:23px;">group</span><span style="font-size:9px;font-weight:600;">Friends</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#706C63;"><span class="mi" style="font-size:23px;">settings</span><span style="font-size:9px;font-weight:600;">Settings</span></div>
             </div>
           </div>
         </div>
@@ -476,22 +479,24 @@
         <div class="lift-card" style="background:var(--card);border-radius:22px;padding:30px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:18px;">
           <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;margin:0;">App Store</h3>
           <div id="qr-appstore" style="width:148px;height:148px;background:#fff;border-radius:14px;padding:11px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);"></div>
-          <a href="https://apps.apple.com/hr/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.89C10.1 6.87 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg> Download for iOS</a>
+          <a href="https://apps.apple.com/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.89C10.1 6.87 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg> Download for iOS</a>
         </div>
         <div class="lift-card" style="background:var(--card);border-radius:22px;padding:30px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:18px;">
           <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;margin:0;">Google Play</h3>
           <div id="qr-playstore" style="width:148px;height:148px;background:#fff;border-radius:14px;padding:11px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);"></div>
-          <a href="https://play.google.com/store/apps/details?id=app.deun.www&pcampaignid=web_share" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="18" height="18" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path><path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path><path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path><path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path></svg> Download for Android</a>
+          <a href="https://play.google.com/store/apps/details?id=app.deun.www&amp;referrer=utm_source%3Ddeun.app%26utm_medium%3Dwebsite%26utm_campaign%3Ddownload" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="18" height="18" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path><path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path><path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path><path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path></svg> Download for Android</a>
         </div>
       </div>
     </div>
   </section>
 
+  </main>
+
   <!-- ===================== FOOTER ===================== -->
   <footer style="padding:40px 24px;border-top:1px solid var(--line);">
     <div style="max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
       <div style="display:flex;align-items:center;gap:9px;">
-        <img src="assets/icon-512.png" alt="deun" style="width:28px;height:28px;border-radius:8px;display:block;">
+        <img src="assets/icon-96.webp" alt="deun" width="28" height="28" style="width:28px;height:28px;border-radius:8px;display:block;">
         <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;">deun</span>
       </div>
       <div style="display:flex;gap:24px;">
@@ -629,8 +634,8 @@
     el.appendChild(canvas);
   }
   function renderAllQR() {
-    renderQR('qr-appstore', 'https://apps.apple.com/hr/app/deun/id6742751703');
-    renderQR('qr-playstore', 'https://play.google.com/store/apps/details?id=app.deun.www');
+    renderQR('qr-appstore', 'https://apps.apple.com/app/deun/id6742751703');
+    renderQR('qr-playstore', 'https://play.google.com/store/apps/details?id=app.deun.www&referrer=utm_source%3Dqr');
   }
   if (window.qrcode) renderAllQR();
   else {
