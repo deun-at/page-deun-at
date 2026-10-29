@@ -69,18 +69,22 @@
     } catch (e) {}
   </script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <!-- Icon font subset: keep icon_names (alphabetical) in sync with the .mi glyphs used below -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add,add_card,arrow_downward,battery_full,call_split,check_circle,close,dark_mode,document_scanner,done_all,flight,group,group_add,groups,home,light_mode,lock,menu,receipt_long,savings,settings,signal_cellular_alt,star,wifi&display=block" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add,add_card,arrow_downward,battery_full,call_split,check_circle,close,dark_mode,document_scanner,done_all,flight,group,group_add,groups,home,light_mode,lock,menu,receipt_long,savings,settings,signal_cellular_alt,star,wifi&display=block"></noscript>
+  <!-- Fonts (self-hosted, latin subset; @font-face rules at the top of <style>) -->
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/material-symbols-rounded-subset.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- QR code generator -->
   <script src="assets/qrcode.min.js" defer></script>
 
   <style>
+    /* Google Fonts (OFL / Apache 2.0), latin subset. Bricolage is used at 700 only.
+       The icon font is a subset of Material Symbols Rounded holding just the glyphs on this page:
+       regenerate it from fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=…
+       (names alphabetical) whenever a new .mi icon is added. */
+    @font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/bricolage-grotesque-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+    @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url(assets/fonts/hanken-grotesk-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+    @font-face{font-family:'Material Symbols Rounded';font-style:normal;font-weight:400;font-display:block;src:url(assets/fonts/material-symbols-rounded-subset.woff2) format('woff2');}
     *{box-sizing:border-box;}
     body{margin:0;}
     html{scroll-behavior:smooth;scroll-padding-top:84px;}
@@ -147,8 +151,9 @@
 
     /* ── Hero entrance + phone polish (v2) ── */
     @media (prefers-reduced-motion: no-preference){
-      @keyframes deunHeroRise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
-      @keyframes deunPhoneRise{from{opacity:0;transform:translateY(44px) rotate(2deg);}to{opacity:1;transform:none;}}
+      /* Transform-only so the hero paints on the first frame (opacity:0 delays FCP/LCP) */
+      @keyframes deunHeroRise{from{transform:translateY(26px);}to{transform:none;}}
+      @keyframes deunPhoneRise{from{transform:translateY(44px) rotate(2deg);}to{transform:none;}}
       .reveal-armed .hero-copy>*{animation:deunHeroRise .8s cubic-bezier(.16,1,.3,1) both;}
       .reveal-armed .hero-copy>*:nth-child(1){animation-delay:.05s;}
       .reveal-armed .hero-copy>*:nth-child(2){animation-delay:.14s;}
