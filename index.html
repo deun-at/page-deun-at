@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- German browsers (or a saved DE choice) go to /de/; the language switch saves the choice -->
+  <!-- Browsers in another supported language (or a saved choice) go to that language's page; the switch saves the choice -->
   <script>
     (function () {
+      var pages = {"de":"de/"};
       var lang = null;
       try { lang = localStorage.getItem('deun-lang'); } catch (e) {}
-      if (!location.hash && (lang === 'de' || (!lang && /^de\b/i.test(navigator.language || '')))) {
-        location.replace('de/' + location.search);
-      }
+      var pick = lang || (navigator.language || '').slice(0, 2).toLowerCase();
+      if (!location.hash && pages[pick]) location.replace(pages[pick] + location.search);
     })();
   </script>
 
@@ -56,6 +56,7 @@
     "@type": "SoftwareApplication",
     "name": "deun",
     "description": "Split expenses with friends effortlessly. Create groups, track costs, and settle up — fairly.",
+    "inLanguage": "en",
     "url": "https://deun.app/",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "iOS, Android, Web",
@@ -68,7 +69,7 @@
   }
   </script>
 
-  <!-- Deep link redirect for backward compatibility -->
+  <!-- Deep link redirect for backward compatibility (old app links were deun.app/#…) -->
   <script>
     if (window.location.hash && window.location.hash.length > 1) {
       window.location.replace('https://app.deun.app/' + window.location.hash);
@@ -612,12 +613,13 @@
   // ── Hero phone: count-up amounts + desktop 3D tilt ──
   if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
     var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+    var money = new Intl.NumberFormat(document.documentElement.lang, { style: 'currency', currency: 'EUR' });
     [].forEach.call(document.querySelectorAll('.count-amt'), function (el) {
       var target = parseFloat(el.getAttribute('data-target') || '0');
       var dur = 1300, t0 = performance.now() + 450;
       var tick = function (now) {
         var p = Math.min(1, Math.max(0, (now - t0) / dur));
-        el.textContent = '€' + (target * ease(p)).toFixed(2);
+        el.textContent = money.format(target * ease(p));
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);

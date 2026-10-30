@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{{#default}}
+  <!-- Browsers in another supported language (or a saved choice) go to that language's page; the switch saves the choice -->
+  <script>
+    (function () {
+      var pages = {{langPagesJson}};
+      var lang = null;
+      try { lang = localStorage.getItem('deun-lang'); } catch (e) {}
+      var pick = lang || (navigator.language || '').slice(0, 2).toLowerCase();
+      if (!location.hash && pages[pick]) location.replace(pages[pick] + location.search);
+    })();
+  </script>
+{{/default}}
+
+  <title>{{pageTitle}}</title>
+  <meta name="description" content="{{metaDescription}}">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="{{metaKeywords}}">
+  <link rel="canonical" href="https://deun.app/{{path}}">
+  {{hreflangLinks}}
+  <meta name="theme-color" content="#F4F3EF">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ogTitle}}">
+  <meta property="og:description" content="{{ogDescription}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://deun.app/{{path}}">
+  <meta property="og:image" content="https://deun.app/assets/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="deun">
+  <meta property="og:locale" content="{{ogLocale}}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ogTitle}}">
+  <meta name="twitter:description" content="{{twitterDescription}}">
+  <meta name="twitter:image" content="https://deun.app/assets/icon-512.png">
+
+  <!-- iOS Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=6742751703">
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" href="{{root}}assets/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{{root}}assets/icon-512.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "deun",
+    "description": "{{ldDescription}}",
+    "inLanguage": "{{lang}}",
+    "url": "https://deun.app/{{path}}",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "iOS, Android, Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "installUrl": "https://apps.apple.com/app/deun/id6742751703"
+  }
+  </script>
+
+{{#default}}
+  <!-- Deep link redirect for backward compatibility (old app links were deun.app/#…) -->
+  <script>
+    if (window.location.hash && window.location.hash.length > 1) {
+      window.location.replace('https://app.deun.app/' + window.location.hash);
+    }
+  </script>
+{{/default}}
+
+  <!-- Restore theme before paint to avoid a flash -->
+  <script>
+    try {
+      if (localStorage.getItem('deun-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  </script>
+
+  <!-- Fonts (self-hosted, latin subset; @font-face rules at the top of <style>) -->
+  <link rel="preload" href="{{root}}assets/fonts/bricolage-grotesque-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{root}}assets/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{root}}assets/fonts/material-symbols-rounded-subset.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- QR code generator -->
+  <script src="{{root}}assets/qrcode.min.js" defer></script>
+
+  <style>
+    /* Google Fonts (OFL / Apache 2.0), latin subset. Bricolage is used at 700 only.
+       The icon font is a subset of Material Symbols Rounded holding just the glyphs on this page:
+       regenerate it from fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=…
+       (names alphabetical) whenever a new .mi icon is added. */
+    @font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700;font-display:swap;src:url({{root}}assets/fonts/bricolage-grotesque-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+    @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url({{root}}assets/fonts/hanken-grotesk-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+    @font-face{font-family:'Material Symbols Rounded';font-style:normal;font-weight:400;font-display:block;src:url({{root}}assets/fonts/material-symbols-rounded-subset.woff2) format('woff2');}
+    *{box-sizing:border-box;}
+    body{margin:0;}
+    html{scroll-behavior:smooth;scroll-padding-top:84px;}
+    a{color:inherit;}
+    img{max-width:100%;}
+    .mi{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;-webkit-font-smoothing:antialiased;display:inline-block;width:1em;height:1em;overflow:hidden;white-space:nowrap;}
+
+    /* ── Theme tokens (light default; dark toggled on <html>) ── */
+    :root{
+      --bg:#F4F3EF; --surface:#FBFAF7; --card:#FFFFFF;
+      --ink:#16181A; --ink-soft:#3C3A35;
+      --muted:#625E56; --faint:#706C63;
+      --line:rgba(20,18,12,.08); --line-strong:#E4E1D8;
+      --accent:#5750E6; --accent-tint:#ECEBFC;
+      --green:#167A50; --red:#B9432F; --amber:#C98A2E;
+      --shadow:0 2px 4px rgba(20,18,12,.04);
+      --shadow-lift:0 16px 34px -18px rgba(20,18,12,.22);
+      --nav-bg:rgba(244,243,239,.82);
+    }
+    [data-theme="dark"]{
+      --bg:#121311; --surface:#1A1B19; --card:#1F211E;
+      --ink:#F2F1EC; --ink-soft:#CFCEC8;
+      --muted:#9A968C; --faint:#8E8A80;
+      --line:rgba(255,255,255,.09); --line-strong:#33352F;
+      --accent:#7A74F0; --accent-tint:rgba(122,116,240,.16);
+      --green:#4ED99B; --red:#F2937F; --amber:#F2C97F;
+      --shadow:0 2px 6px rgba(0,0,0,.32);
+      --shadow-lift:0 18px 38px -18px rgba(0,0,0,.6);
+      --nav-bg:rgba(18,19,17,.82);
+    }
+
+    @keyframes deunPulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+    /* ── View-transition circular theme reveal ── */
+    ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal;}
+    ::view-transition-old(root){z-index:0;}
+    ::view-transition-new(root){z-index:1;}
+
+    /* ── Scroll reveal (transform only; content stays visible) ── */
+    .reveal{transform:none;}
+    .reveal-armed .reveal{transform:translateY(24px);transition:transform .7s cubic-bezier(.16,1,.3,1);}
+    .reveal-armed .reveal.is-visible{transform:none;}
+    .reveal-armed .stagger.is-visible>*{transform:none;}
+    .reveal-armed .stagger>*{transform:translateY(18px);transition:transform .55s cubic-bezier(.16,1,.3,1);}
+    .reveal-armed.reveal-snap .reveal,.reveal-armed.reveal-snap .stagger>*{transition:none;}
+    .reveal-armed .stagger.is-visible>*:nth-child(1){transition-delay:.04s;}
+    .reveal-armed .stagger.is-visible>*:nth-child(2){transition-delay:.11s;}
+    .reveal-armed .stagger.is-visible>*:nth-child(3){transition-delay:.18s;}
+    .reveal-armed .stagger.is-visible>*:nth-child(4){transition-delay:.25s;}
+
+    /* ── Theme icon swap ── */
+    .th-sun{display:none;}.th-moon{display:inline-flex;}
+    [data-theme="dark"] .th-sun{display:inline-flex;}[data-theme="dark"] .th-moon{display:none;}
+
+    /* ── Hover states (design used style-hover) ── */
+    .nav-link{transition:color .2s;}
+    .nav-link:hover{color:var(--ink);}
+    .icon-btn{transition:color .2s,border-color .2s;}
+    .icon-btn:hover{color:var(--ink);}
+    .lift-card{transition:box-shadow .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1);}
+    .lift-card:hover{box-shadow:var(--shadow-lift);transform:translateY(-3px);}
+    .foot-link{transition:color .2s;}
+    .foot-link:hover{color:var(--ink);}
+
+    /* ── Hero entrance + phone polish (v2) ── */
+    @media (prefers-reduced-motion: no-preference){
+      /* Transform-only so the hero paints on the first frame (opacity:0 delays FCP/LCP) */
+      @keyframes deunHeroRise{from{transform:translateY(26px);}to{transform:none;}}
+      @keyframes deunPhoneRise{from{transform:translateY(44px) rotate(2deg);}to{transform:none;}}
+      .reveal-armed .hero-copy>*{animation:deunHeroRise .8s cubic-bezier(.16,1,.3,1) both;}
+      .reveal-armed .hero-copy>*:nth-child(1){animation-delay:.05s;}
+      .reveal-armed .hero-copy>*:nth-child(2){animation-delay:.14s;}
+      .reveal-armed .hero-copy>*:nth-child(3){animation-delay:.23s;}
+      .reveal-armed .hero-copy>*:nth-child(4){animation-delay:.32s;}
+      .reveal-armed .hero-copy>*:nth-child(5){animation-delay:.41s;}
+      .reveal-armed .hero-phone{animation:deunPhoneRise .95s cubic-bezier(.16,1,.3,1) .18s both;}
+    }
+    .site-nav{box-shadow:0 8px 24px -20px rgba(20,18,12,0);transition:box-shadow .35s ease;}
+    .deun-root.is-scrolled .site-nav{box-shadow:0 8px 24px -14px rgba(20,18,12,.22);}
+    .phone-tilt{transition:transform .18s ease-out;will-change:transform;}
+    [data-theme="dark"] .phone-screen{--p-av:#1F211E;background:#121311 !important;color:#F2F1EC !important;}
+    [data-theme="dark"] .phone-screen .p-faint{color:#8A867C !important;}
+    [data-theme="dark"] .phone-screen .p-hero{background:#16181A !important;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 18px 30px -18px rgba(0,0,0,.65) !important;}
+    [data-theme="dark"] .phone-screen .p-card{background:#1F211E !important;box-shadow:0 2px 6px rgba(0,0,0,.32) !important;}
+    [data-theme="dark"] .phone-screen .p-accent{color:#7A74F0 !important;}
+    [data-theme="dark"] .phone-screen .p-accent-bg{background:#7A74F0 !important;}
+    [data-theme="dark"] .phone-screen .p-pos{color:#4ED99B !important;}
+    [data-theme="dark"] .phone-screen .p-neg{color:#F2937F !important;}
+    [data-theme="dark"] .phone-screen .p-star-off{color:#45473F !important;}
+    [data-theme="dark"] .phone-screen .p-tabbar{background:#1A1B19 !important;border-top-color:rgba(255,255,255,.08) !important;}
+    [data-theme="dark"] .phone-screen .p-tab-off{color:#6E6B62 !important;}
+    [data-theme="dark"] .phone-screen .p-tint-a{background:rgba(217,105,78,.18) !important;}
+    [data-theme="dark"] .phone-screen .p-tint-a .mi{color:#E8907B !important;}
+    [data-theme="dark"] .phone-screen .p-tint-b{background:rgba(122,116,240,.2) !important;}
+    [data-theme="dark"] .phone-screen .p-tint-b .mi{color:#9C97F4 !important;}
+
+    /* ── Layout grids ── */
+    .nav-links{display:flex;}
+    .menu-btn{display:none;}
+    .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:56px;align-items:center;}
+    .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+    .dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+
+    /* ── Mobile menu overlay ── */
+    .mobile-nav{display:none;}
+    .mobile-nav.open{display:flex;}
+
+    @media(max-width:960px){
+      .feat-grid{grid-template-columns:repeat(2,1fr);}
+      .hero-grid{grid-template-columns:1fr;gap:48px;text-align:center;}
+      .hero-copy{align-items:center !important;}
+      .hero-actions{justify-content:center;}
+      .hero-meta{justify-content:center;}
+    }
+    @media(max-width:720px){
+      .nav-links{display:none;}
+      .menu-btn{display:inline-flex;}
+      .steps-grid{grid-template-columns:1fr;}
+      .dl-grid{grid-template-columns:1fr;max-width:340px;margin-left:auto;margin-right:auto;}
+    }
+    @media(max-width:520px){
+      .feat-grid{grid-template-columns:1fr;}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .reveal-armed .reveal,.reveal-armed .stagger>*{transition:none !important;transform:none !important;}
+      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;}
+    }
+  </style>
+</head>
+
+<body>
+<div class="deun-root" style="background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;">
+
+  <nav class="site-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--nav-bg);border-bottom:1px solid var(--line);">
+    <div style="max-width:1140px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);">
+        <img src="{{root}}assets/icon-96.webp" alt="deun" width="34" height="34" style="width:34px;height:34px;border-radius:10px;box-shadow:0 8px 16px -8px rgba(87,80,230,.55);display:block;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.02em;">deun</span>
+      </a>
+      <div class="nav-links" style="align-items:center;gap:30px;">
+        <a href="#features" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">{{navFeatures}}</a>
+        <a href="#how" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">{{navHow}}</a>
+        <a href="#download" class="nav-link" style="text-decoration:none;color:var(--muted);font-size:14px;font-weight:600;">{{navDownload}}</a>
+        {{langSwitch}}
+        <div data-theme-toggle class="icon-btn" title="{{themeToggle}}" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);">
+          <span class="mi th-moon" style="font-size:19px;">dark_mode</span>
+          <span class="mi th-sun" style="font-size:19px;">light_mode</span>
+        </div>
+        <a href="#download" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:var(--accent);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 12px 22px -12px rgba(87,80,230,.6);">
+          {{navGetApp}}
+          <span class="mi" style="font-size:17px;">arrow_downward</span>
+        </a>
+      </div>
+      <div class="menu-btn" style="align-items:center;gap:8px;">
+        {{langSwitch}}
+        <div data-theme-toggle class="icon-btn" style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);">
+          <span class="mi th-moon" style="font-size:19px;">dark_mode</span>
+          <span class="mi th-sun" style="font-size:19px;">light_mode</span>
+        </div>
+        <div data-menu-toggle style="width:38px;height:38px;border-radius:11px;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);">
+          <span class="mi" data-menu-icon style="font-size:22px;">menu</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" data-mobile-nav style="position:fixed;inset:0;z-index:95;background:var(--bg);padding:88px 28px 40px;flex-direction:column;">
+    <div style="display:flex;flex-direction:column;">
+      <a data-menu-close href="#features" style="text-decoration:none;color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.02em;padding:18px 0;border-bottom:1px solid var(--line);">{{navFeatures}}</a>
+      <a data-menu-close href="#how" style="text-decoration:none;color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.02em;padding:18px 0;border-bottom:1px solid var(--line);">{{navHow}}</a>
+      <a data-menu-close href="#download" style="text-decoration:none;color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:700;letter-spacing:-.02em;padding:18px 0;border-bottom:1px solid var(--line);">{{navDownload}}</a>
+    </div>
+    <a data-menu-close href="#download" style="margin-top:28px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:var(--accent);color:#fff;padding:16px;border-radius:14px;font-size:16px;font-weight:700;">{{navGetApp}} <span class="mi" style="font-size:19px;">arrow_downward</span></a>
+    <div style="margin-top:auto;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:deunPulseDot 2s ease-in-out infinite;"></span> {{menuFreeOn}}
+    </div>
+  </div>
+
+  <main>
+  <!-- ===================== HERO ===================== -->
+  <section id="top" style="padding:138px 24px 70px;">
+    <div class="hero-grid" style="max-width:1140px;margin:0 auto;">
+      <div class="hero-copy" style="display:flex;flex-direction:column;align-items:flex-start;">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;background:var(--accent-tint);color:var(--accent);font-size:13px;font-weight:700;margin-bottom:26px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);animation:deunPulseDot 2s ease-in-out infinite;"></span>
+          {{heroBadge}}
+        </div>
+        <h1 style="width:100%;font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2.9rem,6vw,4.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:0 0 20px;">{{heroTitle}}<br><span style="color:var(--accent);">{{heroTitleAccent}}</span></h1>
+        <p style="font-size:clamp(1.02rem,1.6vw,1.22rem);color:var(--muted);line-height:1.6;max-width:480px;margin:0 0 36px;font-weight:500;">{{heroBody}}</p>
+        <div class="hero-actions" style="display:flex;gap:13px;flex-wrap:wrap;">
+          <a href="https://apps.apple.com/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--ink);color:var(--bg);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.89C10.1 6.87 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+            <div style="text-align:left;line-height:1.15;"><div style="font-size:10.5px;opacity:.7;font-weight:600;">{{storeAppStorePre}}</div><div style="font-size:15.5px;font-weight:700;">App Store</div></div>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=app.deun.www&amp;referrer=utm_source%3Ddeun.app%26utm_medium%3Dwebsite%26utm_campaign%3Dhero{{utmSuffix}}{{playHl}}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;text-decoration:none;padding:13px 21px;border-radius:14px;background:var(--card);color:var(--ink);border:1px solid var(--line-strong);box-shadow:var(--shadow);">
+            <svg width="22" height="22" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path><path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path><path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path><path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path></svg>
+            <div style="text-align:left;line-height:1.15;"><div style="font-size:10.5px;color:var(--faint);font-weight:600;">{{storePlayPre}}</div><div style="font-size:15.5px;font-weight:700;">Google Play</div></div>
+          </a>
+        </div>
+        <div class="hero-meta" style="display:flex;align-items:center;gap:18px;margin-top:26px;color:var(--faint);font-size:13px;font-weight:600;">
+          <span style="display:inline-flex;align-items:center;gap:6px;"><span class="mi" style="font-size:17px;color:var(--green);">check_circle</span> {{heroMetaPaywall}}</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;"><span class="mi" style="font-size:17px;color:var(--green);">check_circle</span> {{heroMetaData}}</span>
+        </div>
+      </div>
+
+      <!-- Phone mockup: Groups home -->
+      <div class="hero-phone" style="display:flex;justify-content:center;">
+        <div class="phone-tilt" style="width:300px;height:610px;background:#0B0C0D;border-radius:46px;padding:9px;box-shadow:0 50px 90px -36px rgba(28,24,14,.5),0 1px 0 rgba(255,255,255,.06) inset;flex:0 0 auto;">
+          <div class="phone-screen" style="text-align:left;width:282px;height:592px;background:#F4F3EF;border-radius:38px;overflow:hidden;position:relative;display:flex;flex-direction:column;color:#16181A;font-family:'Hanken Grotesk',sans-serif;">
+            <div style="height:38px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:relative;">
+              <div style="font-size:12px;font-weight:700;">9:41</div>
+              <div style="position:absolute;left:50%;top:7px;transform:translateX(-50%);width:78px;height:21px;background:#0B0C0D;border-radius:12px;"></div>
+              <div style="display:flex;align-items:center;gap:5px;"><span class="mi" style="font-size:13px;">signal_cellular_alt</span><span class="mi" style="font-size:13px;">wifi</span><span class="mi" style="font-size:15px;">battery_full</span></div>
+            </div>
+            <div style="flex:1;overflow:hidden;padding:4px 16px 14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:6px 2px 14px;">
+                <div>
+                  <div class="p-faint" style="font-size:11px;color:#706C63;font-weight:600;">{{mockGreeting}}</div>
+                  <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1;">Maya</div>
+                </div>
+                <div class="p-accent-bg" style="width:36px;height:36px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">M</div>
+              </div>
+              <div class="p-hero" style="background:#16181A;border-radius:22px;padding:16px 17px;color:#fff;margin-bottom:18px;box-shadow:0 18px 30px -18px rgba(20,18,12,.5);">
+                <div style="font-size:11px;color:#9DA0A0;font-weight:600;margin-bottom:4px;">{{mockOverallOwed}}</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:33px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="182.30">{{mockOverallAmount}}</span></div>
+                <div style="display:flex;gap:7px;margin-top:14px;">
+                  <div style="flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;">
+                    <div style="font-size:10px;color:#9DA0A0;font-weight:600;">{{mockStatOwed}}</div>
+                    <div style="font-size:14px;font-weight:700;color:#4ED99B;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="224.30">{{mockStatOwedAmount}}</span></div>
+                  </div>
+                  <div style="flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;">
+                    <div style="font-size:10px;color:#9DA0A0;font-weight:600;">{{mockStatOwe}}</div>
+                    <div style="font-size:14px;font-weight:700;color:#F2937F;font-variant-numeric:tabular-nums;"><span class="count-amt" data-target="42.00">{{mockStatOweAmount}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px;">
+                <div style="font-size:15px;font-weight:700;letter-spacing:-.01em;">{{mockYourGroups}}</div>
+                <div class="p-accent" style="display:flex;align-items:center;gap:3px;color:#5750E6;"><span class="mi" style="font-size:17px;">add</span><span style="font-size:12px;font-weight:700;">{{mockNew}}</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <div class="p-card" style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
+                    <div class="p-tint-a" style="width:31px;height:31px;border-radius:10px;background:#FBE7E0;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#D9694E;">flight</span></div>
+                    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15.5px;font-weight:700;letter-spacing:-.01em;flex:1;">{{mockGroupTrip}}</div>
+                    <span class="mi" style="font-size:19px;color:#E0A52E;">star</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;">
+                      <div style="width:22px;height:22px;border-radius:50%;background:#5750E6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">M</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#D9694E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">S</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#167A50;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">J</div>
+                    </div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#706C63;font-weight:500;">{{mockGroupOwedLabel}}</span><span class="p-pos" style="font-size:14px;font-weight:700;color:#167A50;font-variant-numeric:tabular-nums;">{{mockGroupTripAmount}}</span></div>
+                  </div>
+                </div>
+                <div class="p-card" style="background:#fff;border-radius:18px;padding:13px 13px 12px;box-shadow:0 2px 4px rgba(20,18,12,.04);">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
+                    <div class="p-tint-b" style="width:31px;height:31px;border-radius:10px;background:#E6E4FB;display:flex;align-items:center;justify-content:center;flex:0 0 auto;"><span class="mi" style="font-size:18px;color:#5750E6;">home</span></div>
+                    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15.5px;font-weight:700;letter-spacing:-.01em;flex:1;">{{mockGroupFlat}}</div>
+                    <span class="mi p-star-off" style="font-size:19px;color:#D5D2C8;">star</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;">
+                      <div style="width:22px;height:22px;border-radius:50%;background:#2E8BB8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);">A</div>
+                      <div style="width:22px;height:22px;border-radius:50%;background:#E0A52E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--p-av,#fff);margin-left:-7px;">R</div>
+                    </div>
+                    <div style="display:flex;align-items:baseline;gap:4px;"><span class="p-faint" style="font-size:11px;color:#706C63;font-weight:500;">{{mockGroupOweLabel}}</span><span class="p-neg" style="font-size:14px;font-weight:700;color:#B9432F;font-variant-numeric:tabular-nums;">{{mockGroupFlatAmount}}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-tabbar" style="flex:0 0 auto;height:60px;background:#FBFAF7;border-top:1px solid rgba(20,18,12,.06);display:flex;align-items:center;justify-content:space-around;padding:0 18px 8px;">
+              <div class="p-accent" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5750E6;"><span class="mi" style="font-size:23px;">receipt_long</span><span style="font-size:9px;font-weight:700;">{{mockTabGroups}}</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#706C63;"><span class="mi" style="font-size:23px;">group</span><span style="font-size:9px;font-weight:600;">{{mockTabFriends}}</span></div>
+              <div class="p-tab-off" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#706C63;"><span class="mi" style="font-size:23px;">settings</span><span style="font-size:9px;font-weight:600;">{{mockTabSettings}}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section id="features" style="padding:84px 24px;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div class="reveal" style="margin-bottom:44px;">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">{{navFeatures}}</div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.02em;line-height:1.05;margin:0 0 14px;">{{featTitle}}<br>{{featTitleAccent}}</h2>
+        <p style="color:var(--muted);font-size:1.08rem;max-width:540px;margin:0;font-weight:500;">{{featLead}}</p>
+      </div>
+      <div class="feat-grid stagger">
+        <div class="lift-card" style="padding:26px 24px;background:var(--card);border-radius:20px;box-shadow:var(--shadow);">
+          <div style="width:46px;height:46px;border-radius:13px;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><span class="mi" style="font-size:26px;">call_split</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-.01em;margin:0 0 9px;">{{featSplitTitle}}</h3>
+          <p style="color:var(--muted);font-size:.94rem;line-height:1.6;margin:0;font-weight:500;">{{featSplitBody}}</p>
+        </div>
+        <div class="lift-card" style="padding:26px 24px;background:var(--card);border-radius:20px;box-shadow:var(--shadow);">
+          <div style="width:46px;height:46px;border-radius:13px;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><span class="mi" style="font-size:26px;">groups</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-.01em;margin:0 0 9px;">{{featGroupTitle}}</h3>
+          <p style="color:var(--muted);font-size:.94rem;line-height:1.6;margin:0;font-weight:500;">{{featGroupBody}}</p>
+        </div>
+        <div class="lift-card" style="padding:26px 24px;background:var(--card);border-radius:20px;box-shadow:var(--shadow);">
+          <div style="width:46px;height:46px;border-radius:13px;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><span class="mi" style="font-size:26px;">document_scanner</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-.01em;margin:0 0 9px;">{{featScanTitle}}</h3>
+          <p style="color:var(--muted);font-size:.94rem;line-height:1.6;margin:0;font-weight:500;">{{featScanBody}}</p>
+        </div>
+        <div class="lift-card" style="padding:26px 24px;background:var(--card);border-radius:20px;box-shadow:var(--shadow);">
+          <div style="width:46px;height:46px;border-radius:13px;background:var(--accent-tint);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><span class="mi" style="font-size:26px;">savings</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-.01em;margin:0 0 9px;">{{featFreeTitle}}</h3>
+          <p style="color:var(--muted);font-size:.94rem;line-height:1.6;margin:0;font-weight:500;">{{featFreeBody}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARISON ===================== -->
+  <section style="padding:24px 24px 84px;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div class="reveal" style="margin-bottom:36px;">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">{{compareEyebrow}}</div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.02em;margin:0 0 14px;">{{compareTitle}}</h2>
+        <p style="color:var(--muted);font-size:1.08rem;max-width:540px;margin:0;font-weight:500;">{{compareLead}}</p>
+      </div>
+      <div class="reveal" style="max-width:660px;background:var(--card);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);">
+          <div>{{compareColFeature}}</div>
+          <div style="width:84px;text-align:center;color:var(--accent);">deun</div>
+          <div style="width:84px;text-align:center;">{{compareColOthers}}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:15px 24px;border-bottom:1px solid var(--line);">
+          <div style="font-size:.96rem;font-weight:600;color:var(--ink);">{{featScanTitle}}</div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.9rem;font-weight:700;"><span class="mi" style="font-size:18px;">check_circle</span>{{compareFree}}</span></div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--faint);font-size:.9rem;font-weight:600;"><span class="mi" style="font-size:18px;">lock</span>{{comparePaid}}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:15px 24px;border-bottom:1px solid var(--line);">
+          <div style="font-size:.96rem;font-weight:600;color:var(--ink);">{{compareRowGroups}}</div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.9rem;font-weight:700;"><span class="mi" style="font-size:18px;">check_circle</span>{{compareFree}}</span></div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--faint);font-size:.9rem;font-weight:600;"><span class="mi" style="font-size:18px;">lock</span>{{comparePaid}}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:15px 24px;border-bottom:1px solid var(--line);">
+          <div style="font-size:.96rem;font-weight:600;color:var(--ink);">{{compareRowSplitTypes}}</div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.9rem;font-weight:700;"><span class="mi" style="font-size:18px;">check_circle</span>{{compareFree}}</span></div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--faint);font-size:.9rem;font-weight:600;"><span class="mi" style="font-size:18px;">lock</span>{{comparePaid}}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:15px 24px;border-bottom:1px solid var(--line);">
+          <div style="font-size:.96rem;font-weight:600;color:var(--ink);">{{compareRowNoAds}}</div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.9rem;font-weight:700;"><span class="mi" style="font-size:18px;">check_circle</span>{{compareYes}}</span></div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--faint);font-size:.9rem;font-weight:600;"><span class="mi" style="font-size:18px;">close</span>{{compareNo}}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;padding:15px 24px;border-bottom:1px solid var(--line);">
+          <div style="font-size:.96rem;font-weight:600;color:var(--ink);">{{compareRowSettle}}</div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:.9rem;font-weight:700;"><span class="mi" style="font-size:18px;">check_circle</span>{{compareFree}}</span></div>
+          <div style="width:84px;display:flex;justify-content:center;"><span style="display:inline-flex;align-items:center;gap:5px;color:var(--faint);font-size:.9rem;font-weight:600;"><span class="mi" style="font-size:18px;">lock</span>{{comparePaid}}</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section id="how" style="padding:84px 24px;background:var(--surface);">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div class="reveal" style="margin-bottom:48px;">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">{{navHow}}</div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.02em;margin:0 0 14px;">{{howTitle}}</h2>
+        <p style="color:var(--muted);font-size:1.08rem;max-width:540px;margin:0;font-weight:500;">{{howLead}}</p>
+      </div>
+      <div class="steps-grid stagger">
+        <div style="background:var(--card);border-radius:22px;padding:30px 26px;box-shadow:var(--shadow);">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;"><div style="width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;">1</div><span class="mi" style="font-size:26px;color:var(--accent);">group_add</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;">{{howStep1Title}}</h3>
+          <p style="color:var(--muted);font-size:.95rem;line-height:1.6;margin:0;font-weight:500;">{{howStep1Body}}</p>
+        </div>
+        <div style="background:var(--card);border-radius:22px;padding:30px 26px;box-shadow:var(--shadow);">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;"><div style="width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;">2</div><span class="mi" style="font-size:26px;color:var(--accent);">add_card</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;">{{howStep2Title}}</h3>
+          <p style="color:var(--muted);font-size:.95rem;line-height:1.6;margin:0;font-weight:500;">{{howStep2Body}}</p>
+        </div>
+        <div style="background:var(--card);border-radius:22px;padding:30px 26px;box-shadow:var(--shadow);">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px;"><div style="width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;">3</div><span class="mi" style="font-size:26px;color:var(--accent);">done_all</span></div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;">{{howStep3Title}}</h3>
+          <p style="color:var(--muted);font-size:.95rem;line-height:1.6;margin:0;font-weight:500;">{{howStep3Body}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DOWNLOAD ===================== -->
+  <section id="download" style="padding:90px 24px;">
+    <div style="max-width:1140px;margin:0 auto;text-align:center;">
+      <div class="reveal" style="margin-bottom:48px;">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">{{navDownload}}</div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.02em;margin:0 0 14px;">{{dlTitle}}</h2>
+        <p style="color:var(--muted);font-size:1.08rem;max-width:560px;margin:0 auto;font-weight:500;">{{dlLead}}</p>
+      </div>
+      <div class="dl-grid stagger" style="max-width:860px;margin:0 auto;">
+        <div class="lift-card" style="background:var(--card);border-radius:22px;padding:30px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:18px;">
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;margin:0;">App Store</h3>
+          <div id="qr-appstore" style="width:148px;height:148px;background:#fff;border-radius:14px;padding:11px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);"></div>
+          <a href="https://apps.apple.com/app/deun/id6742751703" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.89C10.1 6.87 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg> {{dlIos}}</a>
+        </div>
+        <div class="lift-card" style="background:var(--card);border-radius:22px;padding:30px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:18px;">
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;margin:0;">Google Play</h3>
+          <div id="qr-playstore" style="width:148px;height:148px;background:#fff;border-radius:14px;padding:11px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);"></div>
+          <a href="https://play.google.com/store/apps/details?id=app.deun.www&amp;referrer=utm_source%3Ddeun.app%26utm_medium%3Dwebsite%26utm_campaign%3Ddownload{{utmSuffix}}{{playHl}}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:11px 20px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink);font-size:.88rem;font-weight:700;"><svg width="18" height="18" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19.7,19.2L4.3,35.3c0,0,0,0,0,0c0.5,1.7,2.1,3,4,3c0.8,0,1.5-0.2,2.1-0.6l0,0l17.4-9.9L19.7,19.2z" fill="#EA4335"></path><path d="M35.3,16.4L35.3,16.4l-7.5-4.3l-8.4,7.4l8.5,8.3l7.5-4.2c1.3-0.7,2.2-2.1,2.2-3.6C37.5,18.5,36.6,17.1,35.3,16.4z" fill="#FBBC04"></path><path d="M4.3,4.7C4.2,5,4.2,5.4,4.2,5.8v28.5c0,0.4,0,0.7,0.1,1.1l16-15.7L4.3,4.7z" fill="#4285F4"></path><path d="M19.8,20l8-7.9L10.5,2.3C9.9,1.9,9.1,1.7,8.3,1.7c-1.9,0-3.6,1.3-4,3c0,0,0,0,0,0L19.8,20z" fill="#34A853"></path></svg> {{dlAndroid}}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="padding:40px 24px;border-top:1px solid var(--line);">
+    <div style="max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <img src="{{root}}assets/icon-96.webp" alt="deun" width="28" height="28" style="width:28px;height:28px;border-radius:8px;display:block;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;">deun</span>
+      </div>
+      <div style="display:flex;gap:24px;">
+        <a href="{{root}}privacy_policy.html" class="foot-link" style="text-decoration:none;color:var(--muted);font-size:.88rem;font-weight:600;">{{footerPrivacy}}</a>
+      </div>
+      <div style="font-size:.8rem;color:var(--faint);font-weight:500;">{{footerCopyright}}</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // ── Theme toggle (circular view-transition reveal from the button) ──
+  function applyTheme(next) {
+    if (next === 'dark') root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+    try { localStorage.setItem('deun-theme', next); } catch (e) {}
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', next === 'dark' ? '#121311' : '#F4F3EF');
+  }
+
+  function toggleTheme(e) {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    var btn = e && e.currentTarget;
+    var x = window.innerWidth - 40, y = 40;
+    if (btn && btn.getBoundingClientRect) {
+      var r = btn.getBoundingClientRect();
+      x = r.left + r.width / 2; y = r.top + r.height / 2;
+    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce) { applyTheme(next); return; }
+
+    var t = document.startViewTransition(function () { applyTheme(next); });
+    t.ready.then(function () {
+      var endR = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+      root.animate(
+        { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + endR + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 560, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    }).catch(function () {});
+  }
+
+  [].forEach.call(document.querySelectorAll('[data-theme-toggle]'), function (el) {
+    el.addEventListener('click', toggleTheme);
+  });
+
+  // ── Mobile menu ──
+  var menu = document.querySelector('[data-mobile-nav]');
+  var menuIcon = document.querySelector('[data-menu-icon]');
+  function setMenu(open) {
+    if (!menu) return;
+    menu.classList.toggle('open', open);
+    if (menuIcon) menuIcon.textContent = open ? 'close' : 'menu';
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  var menuToggle = document.querySelector('[data-menu-toggle]');
+  if (menuToggle) menuToggle.addEventListener('click', function () {
+    setMenu(!menu.classList.contains('open'));
+  });
+  [].forEach.call(document.querySelectorAll('[data-menu-close]'), function (a) {
+    a.addEventListener('click', function () { setMenu(false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setMenu(false);
+  });
+
+  // ── Scroll reveal (transform only; content is always visible) ──
+  root.classList.add('reveal-armed');
+  var els = [].slice.call(document.querySelectorAll('.reveal, .stagger'));
+  function reveal(el) { el.classList.add('is-visible'); }
+  function inView(el) {
+    var r = el.getBoundingClientRect();
+    return r.top < (window.innerHeight || 800) - 40 && r.bottom > 0;
+  }
+  function sweep() {
+    els.forEach(function (el) { if (!el.classList.contains('is-visible') && inView(el)) reveal(el); });
+  }
+  requestAnimationFrame(function () { requestAnimationFrame(sweep); });
+  window.addEventListener('scroll', sweep, { passive: true });
+  setTimeout(function () { root.classList.add('reveal-snap'); els.forEach(reveal); }, 1200);
+
+  // ── Nav shadow on scroll ──
+  var deunRoot = document.querySelector('.deun-root');
+  function navSweep() { if (deunRoot) deunRoot.classList.toggle('is-scrolled', (window.scrollY || 0) > 8); }
+  navSweep();
+  window.addEventListener('scroll', navSweep, { passive: true });
+
+  // ── Hero phone: count-up amounts + desktop 3D tilt ──
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+    var money = new Intl.NumberFormat(document.documentElement.lang, { style: 'currency', currency: 'EUR' });
+    [].forEach.call(document.querySelectorAll('.count-amt'), function (el) {
+      var target = parseFloat(el.getAttribute('data-target') || '0');
+      var dur = 1300, t0 = performance.now() + 450;
+      var tick = function (now) {
+        var p = Math.min(1, Math.max(0, (now - t0) / dur));
+        el.textContent = money.format(target * ease(p));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+
+    var phone = document.querySelector('.phone-tilt');
+    var heroSec = document.querySelector('#top');
+    if (phone && heroSec && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      heroSec.addEventListener('mousemove', function (ev) {
+        var r = phone.getBoundingClientRect();
+        var dx = (ev.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
+        var dy = (ev.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
+        phone.style.transform = 'perspective(1100px) rotateY(' + (dx * 4).toFixed(2) + 'deg) rotateX(' + (-dy * 3).toFixed(2) + 'deg)';
+      });
+      heroSec.addEventListener('mouseleave', function () { phone.style.transform = ''; });
+    }
+  }
+
+  // ── Language switch remembers the choice for the redirect in <head> ──
+  [].forEach.call(document.querySelectorAll('[data-lang-switch]'), function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem('deun-lang', a.getAttribute('data-lang-switch')); } catch (e) {}
+    });
+  });
+
+  // ── QR codes (fixed dark modules on white, both themes) ──
+  function renderQR(id, url) {
+    var el = document.getElementById(id);
+    if (!el || !window.qrcode) return;
+    el.innerHTML = '';
+    var qr = window.qrcode(0, 'M');
+    qr.addData(url); qr.make();
+    var size = 126, count = qr.getModuleCount(), cell = size / count;
+    var canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    canvas.style.width = '100%'; canvas.style.height = '100%';
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#16181A';
+    for (var r = 0; r < count; r++) for (var c = 0; c < count; c++) {
+      if (qr.isDark(r, c)) ctx.fillRect(Math.round(c * cell), Math.round(r * cell), Math.ceil(cell), Math.ceil(cell));
+    }
+    el.appendChild(canvas);
+  }
+  function renderAllQR() {
+    renderQR('qr-appstore', 'https://apps.apple.com/app/deun/id6742751703');
+    renderQR('qr-playstore', 'https://play.google.com/store/apps/details?id=app.deun.www&referrer=utm_source%3Dqr{{utmSuffix}}{{playHlJs}}');
+  }
+  if (window.qrcode) renderAllQR();
+  else {
+    var wait = setInterval(function () { if (window.qrcode) { clearInterval(wait); renderAllQR(); } }, 120);
+  }
+})();
+</script>
+
+</body>
+</html>
